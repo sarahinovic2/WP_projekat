@@ -1,0 +1,67 @@
+<h1>Kanban Ploča</h1>
+<p class="debug">DEBUG: Kanban template loaded</p>
+
+<div class="buttons">
+  <button (click)="openTaskModal()">Dodaj zadatak</button>
+  <button (click)="saveBoardPng()">Snimi</button>
+  <button (click)="openClearModal()">Čisti ploču</button>
+  <button (click)="saveBoardPdf()">Snimi kao PDF</button>
+  <button (click)="openEmailModal()">Pošalji mailom</button>
+</div>
+
+<!-- Modal dodaj zadatak -->
+<div class="modal" *ngIf="showTaskModal">
+  <div class="modal-content">
+    <h3>Dodaj zadatak</h3>
+    <input type="text" [(ngModel)]="taskText" placeholder="Vaš zadatak..." />
+    <div class="modal-buttons">
+      <button (click)="addTask()">Dodaj</button>
+      <button (click)="closeTaskModal()">Poništi</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal čišćenje ploče -->
+<div class="modal" *ngIf="showClearModal">
+  <div class="modal-content">
+    <h3>Očisti cijelu ploču?</h3>
+    <div class="modal-buttons">
+      <button (click)="clearBoard()" style="background:#e74c3c;">Očisti</button>
+      <button (click)="closeClearModal()">Poništi</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal email -->
+<div class="modal" *ngIf="showEmailModal">
+  <div class="modal-content">
+    <h3>Pošaljite sadržaj Kanban ploče</h3>
+    <label for="emailInput">Email:</label>
+    <input type="email" id="emailInput" [(ngModel)]="email" placeholder="Unesite email..." />
+    <div class="modal-buttons">
+      <button (click)="sendEmail()">Pošalji</button>
+      <button (click)="closeEmailModal()">Poništi</button>
+    </div>
+  </div>
+</div>
+
+<div class="board">
+  <div class="column" data-status="todo">
+    <h2>To Do</h2>
+    <div class="taskList"></div>
+  </div>
+
+  <div class="column" data-status="progress">
+    <h2>In Progress</h2>
+    <div class="taskList"></div>
+  </div>
+
+  <div class="column" data-status="done">
+    <h2>Done</h2>
+    <div class="taskList"></div>
+  </div>
+</div>
+
+<footer>
+  Web programiranje 2025 Internacionalna poslovno-informaciona akademija Tuzla
+</footer>

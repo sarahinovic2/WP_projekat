@@ -1,0 +1,73 @@
+<h2>Movie of the Month</h2>
+<p>Odaberite mjesec i upišite film, opis, recenziju, omiljeni dio i poster.</p>
+
+<!-- Odabir mjeseca -->
+<div class="month-selector">
+  <label>Mjesec:</label>
+  <select [(ngModel)]="selectedMonthIndex" (change)="onMonthChange(+selectedMonthIndex)">
+    <option *ngFor="let m of months; index as i" [ngValue]="i">{{ m }}</option>
+  </select>
+</div>
+
+<!-- Forma za odabrani mjesec -->
+<div class="movie-form">
+  <div class="poster-column">
+    <div class="poster-preview" *ngIf="form.posterDataUrl; else noPoster">
+      <img [src]="form.posterDataUrl" alt="Poster filma" />
+    </div>
+    <ng-template #noPoster>
+      <div class="poster-placeholder">Poster nije odabran</div>
+    </ng-template>
+
+    <label class="poster-upload">
+      Odaberite poster:
+      <input type="file" accept="image/*" (change)="onPosterSelected($event)" />
+    </label>
+  </div>
+
+  <div class="info-column">
+    <label>
+      Naziv filma:
+      <input type="text" [(ngModel)]="form.title" />
+    </label>
+
+    <label>
+      Kratki opis:
+      <textarea rows="2" [(ngModel)]="form.description"></textarea>
+    </label>
+
+    <label>
+      Recenzija (utisak):
+      <textarea rows="3" [(ngModel)]="form.review"></textarea>
+    </label>
+
+    <label>
+      Omiljeni dio:
+      <textarea rows="2" [(ngModel)]="form.favoriteScene"></textarea>
+    </label>
+
+    <div class="buttons-row">
+      <button type="button" (click)="saveEntry()">Sačuvaj</button>
+      <button type="button" (click)="clearEntry()">Obriši ovaj mjesec</button>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<!-- Pregled svih 12 mjeseci u liniji -->
+<h3>Pregled svih filmova u godini</h3>
+<div class="year-line">
+  <div class="month-card" *ngFor="let m of months; index as i">
+    <div class="month-name">{{ m }}</div>
+    <ng-container *ngIf="getEntry(i) as entry; else emptyMonth">
+      <div class="month-poster" *ngIf="entry.posterDataUrl">
+        <img [src]="entry.posterDataUrl" alt="{{ entry.title }}" />
+      </div>
+      <div class="month-title">{{ entry.title }}</div>
+    </ng-container>
+    <ng-template #emptyMonth>
+      <div class="month-empty">Nema filma</div>
+    </ng-template>
+  </div>
+</div>

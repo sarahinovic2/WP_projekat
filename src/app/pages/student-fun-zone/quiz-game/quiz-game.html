@@ -1,0 +1,67 @@
+<h1>Kviz</h1>
+<p>Dobrodošli u studentski kviz! Testirajte svoje znanje o HTML-u i osnovama weba.</p>
+<p>Odaberite tačan odgovor(e) za svako pitanje. Neki mogu imati više tačnih opcija!</p>
+
+<form>
+  <table>
+    <tr>
+      <td>
+        <h3>1. Šta je skraćenica HTML?</h3>
+        <label><input type="radio" name="q1" value="a"> HyperText Markup Language</label><br>
+        <label><input type="radio" name="q1" value="b"> HighText Markdown Language</label><br>
+        <label><input type="radio" name="q1" value="c"> HyperText Makeup Language</label>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h3>2. Koje se oznake koriste za izradu popisa u HTML-u?</h3>
+        <label><input type="checkbox" name="q2" value="a"> &lt;ul&gt;</label><br>
+        <label><input type="checkbox" name="q2" value="b"> &lt;ol&gt;</label><br>
+        <label><input type="checkbox" name="q2" value="c"> &lt;li&gt;</label><br>
+        <label><input type="checkbox" name="q2" value="d"> &lt;br&gt;</label>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h3>3. Koja se oznaka koristi za umetanje slike?</h3>
+        <label><input type="radio" name="q3" value="a"> &lt;image&gt;</label><br>
+        <label><input type="radio" name="q3" value="b"> &lt;img&gt;</label><br>
+        <label><input type="radio" name="q3" value="c"> &lt;src&gt;</label>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h3>4. Koji od sljedećih su valjani HTML atributi?</h3>
+        <label><input type="checkbox" name="q4" value="a"> href</label><br>
+        <label><input type="checkbox" name="q4" value="b"> src</label><br>
+        <label><input type="checkbox" name="q4" value="c"> bold</label><br>
+        <label><input type="checkbox" name="q4" value="d"> alt</label>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <h3>5. Koji je ispravan način za stvaranje linkova u HTML-u?</h3>
+        <label><input type="radio" name="q5" value="a">
+          &lt;a url="example.com"&gt;Click&lt;/a&gt;
+        </label><br>
+        <label><input type="radio" name="q5" value="b">
+          &lt;a href="example.com"&gt;Click&lt;/a&gt;
+        </label><br>
+        <label><input type="radio" name="q5" value="c">
+          &lt;link&gt;Click&lt;/link&gt;
+        </label>
+      </td>
+    </tr>
+  </table>
+
+  <button type="button" (click)="checkAnswers()">Provjerite odgovore</button>
+  <p id="result">{{ resultText }}</p>
+</form>
+
+<footer>
+  <p>Web programiranje 2025 Internacionalna poslovno-informaciona akademija Tuzla</p>
+</footer>

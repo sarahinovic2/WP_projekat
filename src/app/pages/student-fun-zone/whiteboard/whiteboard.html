@@ -1,0 +1,31 @@
+<h1>Interaktivni Whiteboard</h1>
+
+<div class="toolbar">
+    <label>Boja:</label>
+    <input type="color" id="colorPicker" value="#ffffff">
+    <label>Četka:</label>
+    <input type="range" id="brushSize" min="1" max="20" value="3">
+
+    <button id="eraserBtn">Briši</button>
+    <button id="clearBtn">Čista ploča</button>
+    <button id="saveBtn">Snimi PNG</button>
+    <button id="emailBtn">Pošalji email</button>
+    <button id="pdfBtn">PDF</button>
+</div>
+
+<canvas id="board" width="900" height="500"></canvas>
+
+<footer>
+    <p>Web programiranje 2025 Internacionalna poslovno-informaciona akademija Tuzla</p>
+  </footer>
+<div id="emailModal" class="modal" style="display:none;">
+    <div class="modal-content">
+        <h3>Pošaljite Whiteboard</h3>
+        <label for="emailInput">Email:</label>
+        <input type="email" id="emailInput" placeholder="example@gmail.com" />
+        <div class="modal-buttons">
+            <button id="sendEmailBtn">Pošalji</button>
+            <button id="cancelEmailBtn">Poništi</button>
+        </div>
+    </div>
+</div>

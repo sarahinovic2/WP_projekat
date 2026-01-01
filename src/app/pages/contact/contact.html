@@ -1,0 +1,59 @@
+ <header>
+        <a href="index.html">
+            <img src="slike/logo-ipi.png" alt="Kursevi IPI">
+        </a>
+    </header>
+
+    <article>
+        <h2>Kontakt</h2>
+        <div class="kontakt-container">
+            <div class="kontakt-tekst">
+                <p>Do IPI-ja se može doći javnim gradskim prevozom ili taksijem.</p>
+                <p>Naša adresa je:</p>
+                <p>
+                    Sveučilišni računski centar<br>
+                    Kulina bana br. 2 (Skver)<br>
+                    Tuzla<br>
+                    75000<br>
+                    Bosna i Hercegovina<br>
+                    <a href="mailto:info@ipi-akademija.ba">info@ipi-akademija.ba</a>
+                </p>
+                <img src="slike/srce.jpg" alt="Srce">
+            </div>
+
+            <div class="kontakt-forma">
+                <h3>Pošaljite nam poruku</h3>
+                <form id="kontaktForm" action="kontakt.php" method="post">
+    <fieldset>
+        <legend>Kontakt forma</legend>
+
+        <label for="ime">Ime:</label>
+        <input type="text" id="ime" name="ime" required>
+
+        <label for="prezime">Prezime:</label>
+        <input type="text" id="prezime" name="prezime" required>
+
+        <label for="email">Email adresa:</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="telefon">Broj telefona:</label>
+        <input type="tel" id="telefon" name="telefon" required>
+
+        <label for="poruka">Poruka:</label>
+        <textarea id="poruka" name="poruka" rows="4" placeholder="Vaša poruka..."></textarea>
+
+        <input type="checkbox" id="pristanak" name="pristanak" required>
+        <label for="pristanak">Prihvatam uslove i saglasan/na sam sa obradom ličnih podataka.</label>
+
+        <button type="submit">Pošalji</button>
+    </fieldset>
+</form>
+
+            </div>
+        </div>
+
+    </article>
+
+    <footer>
+        &copy; Internacionalna poslovno-informaciona akademija Tuzla
+    </footer>

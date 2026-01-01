@@ -1,0 +1,40 @@
+.sfz {
+  display: flex;
+  gap: 20px;
+}
+
+.sfz-sidebar {
+  width: 220px;
+  padding: 10px;
+  border-right: 1px solid #e0e0e0;
+}
+
+.sfz-sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sfz-sidebar li {
+  margin: 8px 0;
+}
+
+.sfz-sidebar a {
+  color: #333;
+  text-decoration: none;
+}
+
+.sfz-sidebar a.active {
+  font-weight: bold;
+}
+
+.sfz-main {
+  flex: 1;
+  padding: 16px;
+  min-height: 320px;
+}
+
+.sfz-placeholder {
+  color: #666;
+  padding: 12px;
+}
