@@ -11,6 +11,8 @@ import { VisionBoardComponent } from './pages/student-fun-zone/vision-board/visi
 import { WhiteboardComponent } from './pages/student-fun-zone/whiteboard/whiteboard';
 import { LoginComponent } from './pages/login/login';
 import { RegisterComponent } from './pages/register/register';
+import { MovieTrackerComponent } from './pages/trackers/movie-tracker/movie-tracker';
+import { MyTrackersComponent } from './pages/trackers/my-trackers/my-trackers';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'about', pathMatch: 'full' },
@@ -24,8 +26,11 @@ export const routes: Routes = [
     { path: 'quiz', component: QuizGameComponent },
     { path: 'vision', component: VisionBoardComponent },
     { path: 'whiteboard', component: WhiteboardComponent }
+
   ] },
-  { path: 'contact', component: Contact },
+  { path: 'trackers', component: MyTrackersComponent },
+  { path: 'trackers/movie', component: MovieTrackerComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent }
+
 ];
