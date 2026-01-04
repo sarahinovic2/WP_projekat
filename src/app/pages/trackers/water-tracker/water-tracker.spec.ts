@@ -1,19 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 
-import { LoginComponent } from './login';
+import { WaterTrackerComponent } from './water-tracker';
 
-describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+describe('WaterTrackerComponent', () => {
+  let component: WaterTrackerComponent;
+  let fixture: ComponentFixture<WaterTrackerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LoginComponent, RouterTestingModule]
+      imports: [WaterTrackerComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(LoginComponent);
+    fixture = TestBed.createComponent(WaterTrackerComponent);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

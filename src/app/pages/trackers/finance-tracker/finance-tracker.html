@@ -1,0 +1,155 @@
+<h2>Finance Tracker</h2>
+<p>
+  Na početku mjeseca unesi prihode i fiksne troškove, a kroz mjesec dodaj troškove po kategorijama.
+  Na dnu vidiš analitiku i procente po kategorijama.
+</p>
+
+<!-- Odabir mjeseca -->
+<div class="month-switcher">
+  <button type="button" (click)="changeMonth(-1)">&laquo;</button>
+  <span>{{ getMonthLabel() }}</span>
+  <button type="button" (click)="changeMonth(1)">&raquo;</button>
+</div>
+
+<!-- Prihodi i fiksni troškovi -->
+<div class="top-fields">
+  <label>
+    Prihod (mjesečno):
+    <input
+      type="number"
+      [(ngModel)]="model.income"
+      name="income"
+      min="0"
+      (change)="onIncomeChange()"
+    />
+  </label>
+
+  <label>
+    Fiksni troškovi:
+    <input
+      type="number"
+      [(ngModel)]="model.fixedExpenses"
+      name="fixed"
+      min="0"
+      (change)="onFixedChange()"
+    />
+  </label>
+</div>
+
+<hr />
+
+<!-- Dodavanje pojedinačnog troška -->
+<h3>Dodaj trošak</h3>
+<form (ngSubmit)="addTransaction()" #txForm="ngForm" class="tx-form">
+  <label>
+    Datum:
+    <input type="date" [(ngModel)]="txDate" name="txDate" required />
+  </label>
+
+  <label>
+    Iznos:
+    <input
+      type="number"
+      [(ngModel)]="txAmount"
+      name="txAmount"
+      min="0.01"
+      step="0.01"
+      required
+    />
+  </label>
+
+  <label>
+    Kategorija:
+    <select [(ngModel)]="txCategory" name="txCategory">
+      <option *ngFor="let c of categories" [ngValue]="c.value">
+        {{ c.label }}
+      </option>
+    </select>
+  </label>
+
+  <label>
+    Opis:
+    <input
+      type="text"
+      [(ngModel)]="txDescription"
+      name="txDescription"
+      placeholder="Npr. kafa s prijateljima"
+    />
+  </label>
+
+  <button type="submit">Dodaj trošak</button>
+</form>
+
+<hr />
+
+<!-- Lista troškova -->
+<h3>Troškovi u mjesecu</h3>
+<table class="tx-table" *ngIf="model.transactions.length; else noTx">
+  <thead>
+    <tr>
+      <th>Datum</th>
+      <th>Iznos</th>
+      <th>Kategorija</th>
+      <th>Opis</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let t of model.transactions">
+      <td>{{ t.date }}</td>
+      <td>{{ t.amount | number:'1.2-2' }}</td>
+      <td>{{ categoryLabel(t.category) }}</td>
+      <td>{{ t.description }}</td>
+      <td><button type="button" (click)="deleteTransaction(t.id)">X</button></td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #noTx>
+  <p>Još nema varijabilnih troškova za ovaj mjesec.</p>
+</ng-template>
+
+<hr />
+
+<!-- Analitika -->
+<h3>Analitika troškova</h3>
+<div class="summary-boxes">
+  <div>
+    <strong>Prihod:</strong> {{ model.income | number:'1.2-2' }}
+  </div>
+  <div>
+    <strong>Fiksni troškovi:</strong> {{ model.fixedExpenses | number:'1.2-2' }}
+  </div>
+  <div>
+    <strong>Varijabilni troškovi:</strong> {{ totalVariable | number:'1.2-2' }}
+  </div>
+  <div [class.positive]="leftover >= 0" [class.negative]="leftover < 0">
+    <strong>Ostaje:</strong> {{ leftover | number:'1.2-2' }}
+  </div>
+</div>
+
+<h4>Potrošnja po kategorijama</h4>
+<table class="category-table">
+  <thead>
+    <tr>
+      <th>Kategorija</th>
+      <th>Iznos</th>
+      <th>Udio u var. troškovima</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let c of categories">
+      <td>{{ c.label }}</td>
+      <td>{{ sumByCategory[c.value] | number:'1.2-2' }}</td>
+      <td>
+        {{ percentByCategory[c.value] }} %
+        <div class="percent-bar">
+          <div
+            class="percent-fill"
+            [style.width.%]="percentByCategory[c.value]"
+          ></div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,113 @@
+<h2>Daily Planner</h2>
+
+<div class="planner-header">
+  <div>
+    <label>
+      Date:
+      <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()" />
+    </label>
+  </div>
+
+  <div class="month-display">
+    Month:
+    {{ selectedDate | date:'MMMM yyyy' }}
+  </div>
+
+  <div class="weather">
+    <label>
+      Weather:
+      <select [(ngModel)]="model.weather" (change)="onWeatherChange()">
+        <option value="">--</option>
+        <option>☀ Sun</option>
+        <option>⛅ Cloudy</option>
+        <option>🌧 Rain</option>
+        <option>❄ Snow</option>
+        <option>⛈ Storm</option>
+      </select>
+    </label>
+  </div>
+</div>
+
+<div class="planner-body">
+  <div class="left-column">
+
+    <section class="block">
+      <h3>To Do List</h3>
+      <div class="todo-input">
+        <input
+          type="text"
+          placeholder="New task..."
+          [(ngModel)]="newTodoText"
+          (keyup.enter)="addTodo()"
+        />
+        <button type="button" (click)="addTodo()">Add</button>
+      </div>
+      <ul class="todo-list">
+        <li *ngFor="let t of model.todos">
+          <label>
+            <input
+              type="checkbox"
+              [checked]="t.done"
+              (change)="toggleTodo(t.id)"
+            />
+            <span [class.done]="t.done">{{ t.text }}</span>
+          </label>
+          <button type="button" (click)="deleteTodo(t.id)">X</button>
+        </li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <h3>Goals for the Day</h3>
+      <div class="goal-input">
+        <input
+          type="text"
+          placeholder="New goal..."
+          [(ngModel)]="newGoalText"
+          (keyup.enter)="addGoal()"
+        />
+        <button type="button" (click)="addGoal()">Add</button>
+      </div>
+      <ul class="goals-list">
+        <li *ngFor="let g of model.goals; index as i">
+          <span>{{ g }}</span>
+          <button type="button" (click)="deleteGoal(i)">X</button>
+        </li>
+      </ul>
+    </section>
+
+    <section class="block">
+      <h3>Notes</h3>
+      <textarea
+        rows="6"
+        [(ngModel)]="model.notes"
+        (input)="onNotesChange()"
+      ></textarea>
+    </section>
+  </div>
+
+  <div class="right-column">
+    <section class="block">
+      <h3>Schedule for Today</h3>
+      <div class="schedule-grid">
+        <div class="schedule-row" *ngFor="let h of hours">
+          <div class="time-label">{{ h }}</div>
+          <input
+            type="text"
+            [(ngModel)]="model.schedule[h]"
+            (input)="onScheduleChange()"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section class="block">
+      <h3>For Tomorrow</h3>
+      <textarea
+        rows="4"
+        [(ngModel)]="model.tomorrow"
+        (input)="onTomorrowChange()"
+      ></textarea>
+    </section>
+  </div>
+</div>

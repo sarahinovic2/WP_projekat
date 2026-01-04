@@ -1,0 +1,60 @@
+<h2>Mood Tracker</h2>
+<p>Odaberi raspoloženje u boji i emoji-ju, dodaj kratku bilješku, i prati kako ti ide kroz dane.</p>
+
+<form (ngSubmit)="addEntry()" #moodForm="ngForm" class="mood-form">
+  <label>
+    Datum:
+    <input type="date" [(ngModel)]="date" name="date" required />
+  </label>
+
+  <div class="mood-buttons">
+    <button
+      type="button"
+      *ngFor="let m of moods"
+      (click)="selectMood(m.value)"
+      [class.selected]="selectedMood === m.value"
+      [ngClass]="m.colorClass"
+    >
+      <span class="emoji">{{ m.label }}</span>
+      <span class="text">{{ m.text }}</span>
+    </button>
+  </div>
+
+  <label>
+    Bilješka:
+    <textarea
+      [(ngModel)]="note"
+      name="note"
+      rows="2"
+      placeholder="Opcionalno: šta je uticalo na raspoloženje?"
+    ></textarea>
+  </label>
+
+  <button type="submit">Dodaj zapis</button>
+</form>
+
+<hr />
+
+<h3>Historija raspoloženja</h3>
+<table class="mood-table" *ngIf="entries.length; else noEntries">
+  <thead>
+    <tr>
+      <th>Datum</th>
+      <th>Raspoloženje</th>
+      <th>Bilješka</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let e of entries" [ngClass]="getMoodMeta(e.mood).colorClass">
+      <td>{{ e.date }}</td>
+      <td>{{ getMoodMeta(e.mood).label }} {{ getMoodMeta(e.mood).text }}</td>
+      <td>{{ e.note }}</td>
+      <td><button type="button" (click)="deleteEntry(e.id)">X</button></td>
+    </tr>
+  </tbody>
+</table>
+
+<ng-template #noEntries>
+  <p>Još nema zapisa. Odaberi raspoloženje za današnji dan.</p>
+</ng-template>

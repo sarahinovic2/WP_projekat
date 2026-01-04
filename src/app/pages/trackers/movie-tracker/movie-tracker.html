@@ -1,7 +1,6 @@
 <h2>Movie of the Month</h2>
 <p>Odaberite mjesec i upišite film, opis, recenziju, omiljeni dio i poster.</p>
 
-<!-- Odabir mjeseca -->
 <div class="month-selector">
   <label>Mjesec:</label>
   <select [(ngModel)]="selectedMonthIndex" (change)="onMonthChange(+selectedMonthIndex)">
@@ -9,7 +8,6 @@
   </select>
 </div>
 
-<!-- Forma za odabrani mjesec -->
 <div class="movie-form">
   <div class="poster-column">
     <div class="poster-preview" *ngIf="form.posterDataUrl; else noPoster">

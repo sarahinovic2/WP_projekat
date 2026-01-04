@@ -28,7 +28,9 @@ export class WhiteboardComponent implements AfterViewInit {
   private lastY = 0;
 
   ngAfterViewInit(): void {
-    const canvas = this.boardCanvas.nativeElement;
+    const canvas = this.boardCanvas?.nativeElement;
+    if (!canvas) return;
+
     this.ctx = canvas.getContext('2d');
 
     // opcionalno, prilagodi dimenzije

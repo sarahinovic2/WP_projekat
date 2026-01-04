@@ -12,6 +12,10 @@ import { WhiteboardComponent } from './pages/student-fun-zone/whiteboard/whitebo
 import { LoginComponent } from './pages/login/login';
 import { RegisterComponent } from './pages/register/register';
 import { MovieTrackerComponent } from './pages/trackers/movie-tracker/movie-tracker';
+import { WaterTrackerComponent } from './pages/trackers/water-tracker/water-tracker';
+import { MoodTrackerComponent } from './pages/trackers/mood-tracker/mood-tracker';
+import { FinanceTrackerComponent } from './pages/trackers/finance-tracker/finance-tracker';
+import { DailyPlannerComponent } from './pages/trackers/daily-planner/daily-planner';
 import { MyTrackersComponent } from './pages/trackers/my-trackers/my-trackers';
 
 export const routes: Routes = [
@@ -30,6 +34,10 @@ export const routes: Routes = [
   ] },
   { path: 'trackers', component: MyTrackersComponent },
   { path: 'trackers/movie', component: MovieTrackerComponent },
+  { path: 'trackers/water', component: WaterTrackerComponent },
+  { path: 'trackers/mood', component: MoodTrackerComponent },
+  { path: 'trackers/finance', component: FinanceTrackerComponent },
+  { path: 'trackers/planner', component: DailyPlannerComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent }
 
