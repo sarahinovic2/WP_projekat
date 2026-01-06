@@ -1,67 +1,90 @@
-<h1>Kanban Ploča</h1>
-<p class="debug">DEBUG: Kanban template loaded</p>
+<div class="page app-main">
+  <section class="card kanban-card">
+    <header class="kanban-header">
+      <div>
+        <h1 class="page-title">Kanban Ploča</h1>
+        <p class="page-subtitle">
+          Organizuj zadatke po fazama: To Do, In Progress, Done.
+        </p>
+      </div>
+      <div class="kanban-buttons">
+        <button class="btn-primary" (click)="openTaskModal()">Dodaj zadatak</button>
+        <button class="btn-secondary" (click)="saveBoardPng()">Snimi</button>
+        <button class="btn-secondary" (click)="saveBoardPdf()">Snimi kao PDF</button>
+        <button class="btn-secondary danger" (click)="openClearModal()">Čisti ploču</button>
+        <button class="btn-secondary" (click)="openEmailModal()">Pošalji mailom</button>
+      </div>
+    </header>
 
-<div class="buttons">
-  <button (click)="openTaskModal()">Dodaj zadatak</button>
-  <button (click)="saveBoardPng()">Snimi</button>
-  <button (click)="openClearModal()">Čisti ploču</button>
-  <button (click)="saveBoardPdf()">Snimi kao PDF</button>
-  <button (click)="openEmailModal()">Pošalji mailom</button>
-</div>
+    <div class="board">
+      <div class="column" data-status="todo">
+        <h2 class="column-title">To Do</h2>
+        <div class="taskList"></div>
+      </div>
 
-<!-- Modal dodaj zadatak -->
-<div class="modal" *ngIf="showTaskModal">
-  <div class="modal-content">
-    <h3>Dodaj zadatak</h3>
-    <input type="text" [(ngModel)]="taskText" placeholder="Vaš zadatak..." />
-    <div class="modal-buttons">
-      <button (click)="addTask()">Dodaj</button>
-      <button (click)="closeTaskModal()">Poništi</button>
+      <div class="column" data-status="progress">
+        <h2 class="column-title">In Progress</h2>
+        <div class="taskList"></div>
+      </div>
+
+      <div class="column" data-status="done">
+        <h2 class="column-title">Done</h2>
+        <div class="taskList"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Modal dodaj zadatak -->
+  <div class="modal" *ngIf="showTaskModal">
+    <div class="modal-backdrop" (click)="closeTaskModal()"></div>
+    <div class="modal-content">
+      <h3>Dodaj zadatak</h3>
+      <input
+        type="text"
+        class="field-input"
+        [(ngModel)]="taskText"
+        placeholder="Vaš zadatak..." />
+      <div class="modal-buttons">
+        <button class="btn-primary" (click)="addTask()">Dodaj</button>
+        <button class="btn-secondary" (click)="closeTaskModal()">Poništi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal čišćenje ploče -->
+  <div class="modal" *ngIf="showClearModal">
+    <div class="modal-backdrop" (click)="closeClearModal()"></div>
+    <div class="modal-content">
+      <h3>Očisti cijelu ploču?</h3>
+      <div class="modal-buttons">
+        <button class="btn-primary danger" (click)="clearBoard()">Očisti</button>
+        <button class="btn-secondary" (click)="closeClearModal()">Poništi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal email -->
+  <div class="modal" *ngIf="showEmailModal">
+    <div class="modal-backdrop" (click)="closeEmailModal()"></div>
+    <div class="modal-content">
+      <h3>Pošaljite sadržaj Kanban ploče</h3>
+      <label class="field">
+        <span class="field-label">Email</span>
+        <input
+          type="email"
+          class="field-input"
+          id="emailInput"
+          [(ngModel)]="email"
+          placeholder="Unesite email..." />
+      </label>
+      <div class="modal-buttons">
+        <button class="btn-primary" (click)="sendEmail()">Pošalji</button>
+        <button class="btn-secondary" (click)="closeEmailModal()">Poništi</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- Modal čišćenje ploče -->
-<div class="modal" *ngIf="showClearModal">
-  <div class="modal-content">
-    <h3>Očisti cijelu ploču?</h3>
-    <div class="modal-buttons">
-      <button (click)="clearBoard()" style="background:#e74c3c;">Očisti</button>
-      <button (click)="closeClearModal()">Poništi</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal email -->
-<div class="modal" *ngIf="showEmailModal">
-  <div class="modal-content">
-    <h3>Pošaljite sadržaj Kanban ploče</h3>
-    <label for="emailInput">Email:</label>
-    <input type="email" id="emailInput" [(ngModel)]="email" placeholder="Unesite email..." />
-    <div class="modal-buttons">
-      <button (click)="sendEmail()">Pošalji</button>
-      <button (click)="closeEmailModal()">Poništi</button>
-    </div>
-  </div>
-</div>
-
-<div class="board">
-  <div class="column" data-status="todo">
-    <h2>To Do</h2>
-    <div class="taskList"></div>
-  </div>
-
-  <div class="column" data-status="progress">
-    <h2>In Progress</h2>
-    <div class="taskList"></div>
-  </div>
-
-  <div class="column" data-status="done">
-    <h2>Done</h2>
-    <div class="taskList"></div>
-  </div>
-</div>
-
-<footer>
+<footer class="app-footer">
   Web programiranje 2025 Internacionalna poslovno-informaciona akademija Tuzla
 </footer>

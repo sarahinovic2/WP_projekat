@@ -1,0 +1,79 @@
+.page {
+  padding: 1.5rem 0;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.page-subtitle {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.sleep-card {
+  margin-bottom: 1.25rem;
+}
+
+/* Forma */
+.sleep-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.field-input {
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+/* Tabela */
+.sleep-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.sleep-table th,
+.sleep-table td {
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.sleep-table thead {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* X dugme */
+.icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.icon-btn:hover {
+  opacity: 1;
+}

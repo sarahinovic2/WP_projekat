@@ -1,0 +1,137 @@
+.page {
+  padding: 1.5rem 0;
+}
+
+.kanban-card {
+  padding: 1.5rem;
+}
+
+/* Header + toolbar */
+
+.kanban-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.3rem;
+}
+
+.page-subtitle {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.kanban-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.btn-secondary {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-secondary.danger,
+.btn-primary.danger {
+  background: #ef4444;
+  border-color: #b91c1c;
+  color: #ffffff;
+}
+
+/* Board */
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.column {
+  padding: 0.75rem;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid var(--color-border);
+}
+
+.column-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.taskList {
+  min-height: 160px;
+}
+
+/* Modal – reuse iz Binga */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+  position: relative;
+  z-index: 50;
+  width: 100%;
+  max-width: 360px;
+  padding: 1.25rem 1.5rem;
+  border-radius: 12px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.field-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.field-input {
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}

@@ -1,59 +1,76 @@
- <header>
-        <a href="index.html">
-            <img src="slike/logo-ipi.png" alt="Kursevi IPI">
-        </a>
-    </header>
 
-    <article>
-        <h2>Kontakt</h2>
-        <div class="kontakt-container">
-            <div class="kontakt-tekst">
-                <p>Do IPI-ja se može doći javnim gradskim prevozom ili taksijem.</p>
-                <p>Naša adresa je:</p>
-                <p>
-                    Sveučilišni računski centar<br>
-                    Kulina bana br. 2 (Skver)<br>
-                    Tuzla<br>
-                    75000<br>
-                    Bosna i Hercegovina<br>
-                    <a href="mailto:info@ipi-akademija.ba">info@ipi-akademija.ba</a>
-                </p>
-                <img src="slike/srce.jpg" alt="Srce">
-            </div>
+<main class="page contact-page app-main">
+  <article class="card contact-card">
+    <h1 class="page-title">Kontakt</h1>
 
-            <div class="kontakt-forma">
-                <h3>Pošaljite nam poruku</h3>
-                <form id="kontaktForm" action="kontakt.php" method="post">
-    <fieldset>
-        <legend>Kontakt forma</legend>
+    <div class="kontakt-container">
+      <div class="kontakt-tekst">
+        <p>Do IPI-ja se može doći javnim gradskim prevozom ili taksijem.</p>
+        <p>Naša adresa je:</p>
+        <p>
+          Sveučilišni računski centar<br />
+          Kulina bana br. 2 (Skver)<br />
+          Tuzla<br />
+          75000<br />
+          Bosna i Hercegovina<br />
+          <a href="mailto:info@ipi-akademija.ba">info@ipi-akademija.ba</a>
+        </p>
+        <img src="assets/slike/srce.jpg" alt="Srce" class="kontakt-slika" />
+      </div>
 
-        <label for="ime">Ime:</label>
-        <input type="text" id="ime" name="ime" required>
+      <div class="kontakt-forma">
+        <h3>Pošaljite nam poruku</h3>
 
-        <label for="prezime">Prezime:</label>
-        <input type="text" id="prezime" name="prezime" required>
+        <form id="kontaktForm" class="kontakt-form" (ngSubmit)="onSubmit()" #f="ngForm">
+          <div class="field">
+            <label class="field-label" for="ime">Ime</label>
+            <input class="field-input" type="text" id="ime" name="ime" required [(ngModel)]="ime" />
+          </div>
 
-        <label for="email">Email adresa:</label>
-        <input type="email" id="email" name="email" required>
+          <div class="field">
+            <label class="field-label" for="prezime">Prezime</label>
+            <input class="field-input" type="text" id="prezime" name="prezime" required [(ngModel)]="prezime" />
+          </div>
 
-        <label for="telefon">Broj telefona:</label>
-        <input type="tel" id="telefon" name="telefon" required>
+          <div class="field">
+            <label class="field-label" for="email">Email adresa</label>
+            <input class="field-input" type="email" id="email" name="email" required [(ngModel)]="email" />
+          </div>
 
-        <label for="poruka">Poruka:</label>
-        <textarea id="poruka" name="poruka" rows="4" placeholder="Vaša poruka..."></textarea>
+          <div class="field">
+            <label class="field-label" for="telefon">Broj telefona</label>
+            <input class="field-input" type="tel" id="telefon" name="telefon" required [(ngModel)]="telefon" />
+          </div>
 
-        <input type="checkbox" id="pristanak" name="pristanak" required>
-        <label for="pristanak">Prihvatam uslove i saglasan/na sam sa obradom ličnih podataka.</label>
+          <div class="field">
+            <label class="field-label" for="poruka">Poruka</label>
+            <textarea
+              class="field-input"
+              id="poruka"
+              name="poruka"
+              rows="4"
+              placeholder="Vaša poruka..."
+              [(ngModel)]="poruka"></textarea>
+          </div>
 
-        <button type="submit">Pošalji</button>
-    </fieldset>
-</form>
+          <label class="checkbox-row">
+            <input type="checkbox" id="pristanak" name="pristanak" required [(ngModel)]="pristanak" />
+            <span>
+              Prihvatam uslove i saglasan/na sam sa obradom ličnih podataka.
+            </span>
+          </label>
 
-            </div>
-        </div>
+          <button type="submit" [disabled]="!f.form.valid" class="btn-primary">
+            Pošalji
+          </button>
 
-    </article>
+          <p *ngIf="submitted" class="success-msg">Hvala — poruka je poslana.</p>
+        </form>
+      </div>
+    </div>
+  </article>
 
-    <footer>
-        &copy; Internacionalna poslovno-informaciona akademija Tuzla
-    </footer>
+  <footer class="app-footer">
+    &copy; Internacionalna poslovno-informaciona akademija Tuzla
+  </footer>
+</main>

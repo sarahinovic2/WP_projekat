@@ -1,0 +1,169 @@
+.page {
+  padding: 1.5rem 0;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.page-subtitle {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.finance-card {
+  margin-bottom: 1.25rem;
+}
+
+/* Mjesec naprijed/nazad */
+.month-switcher {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.month-label {
+  font-weight: 600;
+}
+
+.btn-secondary {
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+/* Prihodi + fiksni troškovi */
+.top-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 180px;
+  gap: 0.25rem;
+}
+
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.field-input {
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+/* Layout za formu + tabelu */
+.finance-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.8fr);
+  gap: 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Form */
+.tx-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+/* Tabela troškova */
+.tx-table,
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.tx-table th,
+.tx-table td,
+.category-table th,
+.category-table td {
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+}
+
+.tx-table thead,
+.category-table thead {
+  background: rgba(0,0,0,0.02);
+}
+
+/* Icon dugme X */
+.icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.icon-btn:hover {
+  opacity: 1;
+}
+
+/* Analitika */
+.summary-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.summary-item {
+  flex: 1 1 160px;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.summary-item span {
+  font-weight: 600;
+}
+
+.summary-item.positive {
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+.summary-item.negative {
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+/* Bar za procente */
+.percent-bar {
+  margin-top: 0.25rem;
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.percent-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--color-primary);
+}

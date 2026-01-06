@@ -1,0 +1,43 @@
+.page {
+  padding: 1.5rem 0;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+  justify-content: center;
+}
+
+.page-subtitle {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.trackers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.tracker-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 170px; /* ista visina */
+}
+
+.tracker-title {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+}
+
+.tracker-desc {
+  flex: 1;
+  margin: 0 0 0.75rem;
+  font-size: 0.9rem;
+}

@@ -1,12 +1,19 @@
 .sfz {
   display: flex;
-  gap: 20px;
+  gap: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
 }
+
+/* Sidebar */
 
 .sfz-sidebar {
   width: 220px;
-  padding: 10px;
-  border-right: 1px solid #e0e0e0;
+  padding: 0.9rem 0.75rem;
+  border-right: 1px solid var(--color-border);
+  background: rgba(0, 0, 0, 0.03);
 }
 
 .sfz-sidebar ul {
@@ -16,25 +23,42 @@
 }
 
 .sfz-sidebar li {
-  margin: 8px 0;
+  margin: 4px 0;
 }
 
 .sfz-sidebar a {
-  color: #333;
+  display: block;
+  padding: 0.45rem 0.75rem;
+  border-radius: 999px;
+  color: var(--color-text);
   text-decoration: none;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.sfz-sidebar a:hover {
+  background: rgba(0, 0, 0, 0.06);
 }
 
 .sfz-sidebar a.active {
-  font-weight: bold;
+  font-weight: 600;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  opacity: 1;
 }
+
+/* Glavni dio */
 
 .sfz-main {
   flex: 1;
-  padding: 16px;
+  padding: 1rem 1.25rem;
   min-height: 320px;
+  background: var(--color-surface);
 }
 
 .sfz-placeholder {
-  color: #666;
-  padding: 12px;
+  color: var(--color-text);
+  opacity: 0.7;
+  padding: 0.75rem 0;
+  font-size: 0.9rem;
 }

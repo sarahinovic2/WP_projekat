@@ -13,32 +13,52 @@ import { LoginComponent } from './pages/login/login';
 import { RegisterComponent } from './pages/register/register';
 import { MovieTrackerComponent } from './pages/trackers/movie-tracker/movie-tracker';
 import { WaterTrackerComponent } from './pages/trackers/water-tracker/water-tracker';
+import { SleepTrackerComponent } from './pages/trackers/sleep-tracker/sleep-tracker';
 import { MoodTrackerComponent } from './pages/trackers/mood-tracker/mood-tracker';
 import { FinanceTrackerComponent } from './pages/trackers/finance-tracker/finance-tracker';
 import { DailyPlannerComponent } from './pages/trackers/daily-planner/daily-planner';
-import { MyTrackersComponent } from './pages/trackers/my-trackers/my-trackers';
+import { Contact as ContactComponent } from './pages/contact/contact';
+import { authGuard } from './guards/auth-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'about', pathMatch: 'full' },
+
   { path: 'about', component: About },
   { path: 'list', component: List },
   { path: 'schedule', component: Schedule },
-  { path: 'student-fun-zone', component: StudentFunZone, children: [
-    { path: '', redirectTo: 'bingo', pathMatch: 'full' },
-    { path: 'bingo', component: BingoGameComponent },
-    { path: 'kanban', component: KanbanBoardComponent },
-    { path: 'quiz', component: QuizGameComponent },
-    { path: 'vision', component: VisionBoardComponent },
-    { path: 'whiteboard', component: WhiteboardComponent }
+  { path: 'contact', component: ContactComponent },
 
-  ] },
-  { path: 'trackers', component: MyTrackersComponent },
-  { path: 'trackers/movie', component: MovieTrackerComponent },
-  { path: 'trackers/water', component: WaterTrackerComponent },
-  { path: 'trackers/mood', component: MoodTrackerComponent },
-  { path: 'trackers/finance', component: FinanceTrackerComponent },
-  { path: 'trackers/planner', component: DailyPlannerComponent },
+  {
+    path: 'student-fun-zone',
+    canActivate: [authGuard],
+    component: StudentFunZone,
+    children: [
+      { path: '', redirectTo: 'bingo', pathMatch: 'full' },
+      { path: 'bingo', component: BingoGameComponent },
+      { path: 'kanban', component: KanbanBoardComponent },
+      { path: 'quiz', component: QuizGameComponent },
+      { path: 'vision', component: VisionBoardComponent },
+      { path: 'whiteboard', component: WhiteboardComponent },
+    ],
+  },
+
+  {
+    path: 'trackers',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/trackers/my-trackers/my-trackers').then(
+        (m) => m.MyTrackersComponent
+      ),
+  },
+  { path: 'trackers/movie', canActivate: [authGuard], component: MovieTrackerComponent },
+  { path: 'trackers/water', canActivate: [authGuard], component: WaterTrackerComponent },
+  { path: 'trackers/sleep', canActivate: [authGuard], component: SleepTrackerComponent },
+  { path: 'trackers/mood', canActivate: [authGuard], component: MoodTrackerComponent },
+  { path: 'trackers/finance', canActivate: [authGuard], component: FinanceTrackerComponent },
+  { path: 'trackers/planner', canActivate: [authGuard], component: DailyPlannerComponent },
+
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent },
 
+  { path: '**', redirectTo: 'about' },
 ];

@@ -1,0 +1,144 @@
+.page {
+  padding: 1.5rem 0;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.page-subtitle {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.water-card {
+  margin-bottom: 1.25rem;
+}
+
+/* Sažetak */
+.water-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  margin-bottom: 1rem;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+/* Polja */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.field-input {
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+/* Čaše */
+.glasses-row {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.glass {
+  height: 32px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+  background: rgba(0,0,0,0.03);
+}
+
+.glass.filled {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+/* Kalendar */
+.calendar-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.month-label {
+  font-weight: 600;
+}
+
+.btn-secondary {
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+/* Grid sa danima */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.25rem;
+  font-size: 0.85rem;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.calendar-cell {
+  height: 34px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: rgba(0,0,0,0.02);
+}
+
+.calendar-cell.empty {
+  background: transparent;
+  border-style: dashed;
+  border-color: rgba(0,0,0,0.08);
+}
+
+.calendar-cell.success {
+  background: rgba(34, 197, 94, 0.18);
+  border-color: #22c55e;
+}
+
+.calendar-cell.selected {
+  box-shadow: 0 0 0 2px var(--color-primary);
+}

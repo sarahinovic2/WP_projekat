@@ -1,0 +1,92 @@
+.page.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-layout {
+  width: 100%;
+  max-width: 420px;
+}
+
+.auth-card {
+  width: 420px;
+  background: var(--color-surface);
+  border: 3px solid var(--color-border);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow-card, 8px 8px 0 rgba(0,0,0,0.12));
+  position: relative;
+  border-radius: 8px;
+}
+
+.page-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  text-align: center;
+}
+
+/* Forma */
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.field-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.field-input {
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  border: 2px solid var(--input-border, var(--color-border));
+  background: var(--input-bg, var(--color-surface));
+  color: var(--input-text, var(--color-text));
+  font: inherit;
+}
+
+.auth-form .btn-primary {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.auth-switch {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.auth-switch a {
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.auth-switch a:hover {
+  text-decoration: underline;
+}
+
+/* Theme select and mode toggle styling */
+.field select.field-input {
+  appearance: none;
+  background: var(--input-bg, var(--color-surface));
+  border: 2px solid var(--input-border, var(--color-border));
+  color: var(--input-text, var(--color-text));
+}
+
+.field input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-primary);
+  cursor: pointer;
+}

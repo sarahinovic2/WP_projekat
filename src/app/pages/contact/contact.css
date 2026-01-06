@@ -1,0 +1,97 @@
+.app-header {
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.logo-link img {
+  height: 40px;
+}
+
+/* Stranica */
+
+.page.contact-page {
+  padding: 1.5rem;
+}
+
+.contact-card {
+  padding: 1.5rem;
+}
+
+/* Naslov */
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1.25rem;
+}
+
+/* Layout dva stupca */
+
+.kontakt-container {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1.5fr);
+  gap: 1.5rem;
+}
+
+.kontakt-tekst {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  line-height: 1.55;
+}
+
+.kontakt-slika {
+  margin-top: 0.5rem;
+  border-radius: 12px;
+  max-width: 100%;
+}
+
+/* Forma */
+
+.kontakt-forma h3 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.kontakt-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.field-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.field-input {
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.checkbox-row input {
+  margin-top: 0.15rem;
+}
+
+.kontakt-form .btn-primary {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+}

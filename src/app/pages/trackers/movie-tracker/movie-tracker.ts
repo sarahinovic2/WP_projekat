@@ -1,28 +1,21 @@
-import { Component, Inject, PLATFORM_ID, OnInit } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, OnInit, inject } from '@angular/core';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface MovieEntry {
-  monthIndex: number;      // 0–11
-  title: string;
-  description: string;
-  review: string;
-  favoriteScene: string;
-  posterDataUrl: string | null;  // base64 slika postera
-}
+import { MovieService, MovieEntry } from '../../../services/movie';
 
 @Component({
   selector: 'app-movie-tracker',
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './movie-tracker.html',
-  styleUrls: ['./movie-tracker.css']
+  styleUrls: ['./movie-tracker.css'],
 })
 export class MovieTrackerComponent implements OnInit {
+  private movieService = inject(MovieService);
 
   months = [
-    'Januar','Februar','Mart','April','Maj','Juni',
-    'Juli','August','Septembar','Oktobar','Novembar','Decembar'
+    'Januar', 'Februar', 'Mart', 'April', 'Maj', 'Juni',
+    'Juli', 'August', 'Septembar', 'Oktobar', 'Novembar', 'Decembar'
   ];
 
   entries: MovieEntry[] = [];
@@ -32,10 +25,9 @@ export class MovieTrackerComponent implements OnInit {
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     if (isPlatformBrowser(this.platformId)) {
-      this.loadFromStorage();
-      // ako već postoji zapis za trenutni mjesec, učitaj ga
+      await this.loadFromFirestore();
       const existing = this.entries.find(e => e.monthIndex === this.selectedMonthIndex);
       if (existing) this.form = { ...existing };
     }
@@ -48,7 +40,7 @@ export class MovieTrackerComponent implements OnInit {
       description: '',
       review: '',
       favoriteScene: '',
-      posterDataUrl: null
+      posterDataUrl: null,
     };
   }
 
@@ -74,34 +66,42 @@ export class MovieTrackerComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  saveEntry(): void {
-    // ukloni stari zapis za taj mjesec
-    this.entries = this.entries.filter(e => e.monthIndex !== this.selectedMonthIndex);
-    // dodaj novi
-    this.entries.push({ ...this.form });
-    this.saveToStorage();
-    alert('Movie of the Month spremljen!');
-  }
-
-  clearEntry(): void {
-    if (!confirm('Obrisati podatke za ovaj mjesec?')) return;
-    this.entries = this.entries.filter(e => e.monthIndex !== this.selectedMonthIndex);
-    this.form = this.emptyEntry(this.selectedMonthIndex);
-    this.saveToStorage();
-  }
-
-  private saveToStorage(): void {
-    if (!isPlatformBrowser(this.platformId)) return;
-    localStorage.setItem('movieOfTheMonth', JSON.stringify(this.entries));
-  }
-
-  private loadFromStorage(): void {
-    if (!isPlatformBrowser(this.platformId)) return;
-    const raw = localStorage.getItem('movieOfTheMonth');
-    if (!raw) return;
+  async saveEntry(): Promise<void> {
     try {
-      this.entries = JSON.parse(raw) as MovieEntry[];
-    } catch {
+      this.form.monthIndex = this.selectedMonthIndex;
+      await this.movieService.saveEntry({
+        monthIndex: this.form.monthIndex,
+        title: this.form.title,
+        description: this.form.description,
+        review: this.form.review,
+        favoriteScene: this.form.favoriteScene,
+        posterDataUrl: this.form.posterDataUrl,
+      });
+      await this.loadFromFirestore();
+      alert('Movie of the Month spremljen!');
+    } catch (e) {
+      console.error(e);
+      alert('Greška pri spremanju filma.');
+    }
+  }
+
+  async clearEntry(): Promise<void> {
+    if (!confirm('Obrisati podatke za ovaj mjesec?')) return;
+    try {
+      await this.movieService.deleteEntryByMonth(this.selectedMonthIndex);
+      this.form = this.emptyEntry(this.selectedMonthIndex);
+      await this.loadFromFirestore();
+    } catch (e) {
+      console.error(e);
+      alert('Greška pri brisanju filma.');
+    }
+  }
+
+  private async loadFromFirestore(): Promise<void> {
+    try {
+      this.entries = await this.movieService.getEntries();
+    } catch (e) {
+      console.error(e);
       this.entries = [];
     }
   }

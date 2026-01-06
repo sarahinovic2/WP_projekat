@@ -1,27 +1,64 @@
-<h2>Register</h2>
+<div class="page auth-page">
+  <div class="auth-layout">
+    <section class="card auth-card">
+      <h1 class="page-title">Register</h1>
 
-<form>
-  <label>Ime</label>
-  <input type="text" placeholder="Unesite ime">
+      <form (ngSubmit)="onSubmit()" #formRef="ngForm" class="auth-form">
+        <label class="field">
+          <span class="field-label">Ime</span>
+          <input
+            class="field-input"
+            name="name"
+            [(ngModel)]="name"
+            type="text"
+            required />
+        </label>
 
-  <label>Email</label>
-  <input type="email" placeholder="Unesite email">
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input
+            class="field-input"
+            name="email"
+            [(ngModel)]="email"
+            type="email"
+            required />
+        </label>
 
-  <label>Password</label>
-  <input type="password" placeholder="Unesite password">
+        <label class="field">
+          <span class="field-label">Password</span>
+          <input
+            class="field-input"
+            name="password"
+            [(ngModel)]="password"
+            type="password"
+            required />
+        </label>
 
-  <label>Izbor teme</label>
-  <select>
-    <option>zelena</option>
-    <option>plava</option>
-    <option>roza</option>
-    <option>tamna/dark</option>
-  </select>
 
-  <button type="submit">Register</button>
+        <label class="field">
+          <span class="field-label">Odaberite temu</span>
+          <select class="field-input" name="theme" [(ngModel)]="theme" (change)="onThemeChange()">
+            <option *ngFor="let t of themes" [value]="t.id">{{ t.label }}</option>
+          </select>
+        </label>
 
-  <p>
-    Već imate račun?
-    <a routerLink="/login">Login</a>
-  </p>
-</form>
+        <label class="field" style="display:flex;align-items:center;gap:0.5rem;">
+          <span class="field-label">Dark mode</span>
+          <input type="checkbox" name="modeToggle" [checked]="mode==='dark'" (change)="toggleModeCheckbox($any($event.target).checked)" />
+        </label>
+
+        <button
+          class="btn-primary"
+          [disabled]="!formRef.form.valid"
+          type="submit">
+          Register
+        </button>
+
+        <p class="auth-switch">
+          Već imate račun?
+          <a routerLink="/login">Login</a>
+        </p>
+      </form>
+    </section>
+  </div>
+</div>

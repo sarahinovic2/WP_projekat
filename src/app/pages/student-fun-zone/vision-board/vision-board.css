@@ -1,0 +1,91 @@
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f2f2f2;
+}
+
+/* TOOLBAR */
+.toolbar {
+  background: white;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+}
+
+.toolbar h1 {
+  margin: 0;
+}
+
+.buttons button,
+.upload {
+  margin-left: 8px;
+  padding: 6px 12px;
+  border: none;
+  background: #111;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* BOARD */
+.board {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ITEMS */
+.item {
+  position: absolute;
+  width: 200px;
+  min-height: 140px;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0 8px 16px rgba(0,0,0,.15);
+  cursor: grab;
+}
+
+.item:active {
+  cursor: grabbing;
+}
+
+.item textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  resize: none;
+  outline: none;
+  font-size: 14px;
+  color: #222;
+}
+
+/* TYPES */
+.quote {
+  font-style: italic;
+}
+
+.image {
+  background: #fff;
+  padding: 6px;
+}
+
+.image img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+/* DELETE */
+.delete {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}

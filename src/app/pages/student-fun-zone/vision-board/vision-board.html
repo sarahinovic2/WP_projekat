@@ -1,29 +1,41 @@
-<h1>Student Fun Zone - Vision Board</h1>
-  <div class="toolBar">
-    <button id="addNoteBtn">+ Post It</button>
-    <button id="addImageBtn">+ Slika</button>
-    <button id="addQuoteBtn">+ Citat</button>
-    <button id="saveBtn">Snimi</button>
-    <button id="clearBtn">Očisti ploču</button>
-    <button id="exportPngBtn">PNG</button>
-    <button id="exportPdfBtn">PDF</button>
-    <button id="emailBtn">Pošalji mail</button>
-  </div>
+<div class="page">
+  <header class="toolbar">
+    <h1>Vision Board</h1>
 
-  <div id="board" class="vision-board"></div>
+    <div class="buttons">
+      <button (click)="addNote()">+ Note</button>
+      <button (click)="addQuote()">+ Quote</button>
 
-<div id="emailModal" class="modal">
-  <div class="modal-content">
-    <h3>Pošaljite sadržaj Vision Boarda</h3>
-    <label for="emailInput">Email:</label>
-    <input type="email" id="emailInput" placeholder="Unesite email...">
-    <div class="modal-buttons">
-      <button id="sendEmailBtn">Pošalji</button>
-      <button id="cancelEmailBtn">Poništi</button>
+      <label class="upload">
+        + Image
+        <input type="file" hidden (change)="uploadImage($event)">
+      </label>
+
+      <button (click)="exportPNG()">PNG</button>
+      <button (click)="exportPDF()">PDF</button>
+      <button (click)="sendEmail()">Email</button>
+    </div>
+  </header>
+
+  <div #board class="board">
+    <div
+      *ngFor="let item of items"
+      class="item"
+      [ngClass]="item.type"
+      [style.left.px]="item.x"
+      [style.top.px]="item.y"
+      [style.background]="item.color"
+      (mousedown)="startDrag($event, item)"
+    >
+      <button class="delete" (click)="removeItem(item.id)">×</button>
+
+      <textarea
+        *ngIf="item.type !== 'image'"
+        [(ngModel)]="item.text"
+        (input)="save()"
+      ></textarea>
+
+      <img *ngIf="item.type === 'image'" [src]="item.src">
     </div>
   </div>
 </div>
-
-  <footer>
-    <p>Web programiranje 2025 Internacionalna poslovno-informaciona akademija Tuzla</p>
-  </footer>

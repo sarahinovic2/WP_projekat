@@ -1,31 +1,53 @@
-<h1>Interaktivni Whiteboard</h1>
+<div class="page app-main">
+  <section class="card whiteboard-card">
+    <header class="whiteboard-header">
+      <div>
+        <h1 class="page-title">Whiteboard</h1>
 
-<div class="toolbar">
-    <label>Boja:</label>
-    <input type="color" id="colorPicker" value="#ffffff">
-    <label>Četka:</label>
-    <input type="range" id="brushSize" min="1" max="20" value="3">
+      </div>
+    </header>
 
-    <button id="eraserBtn">Briši</button>
-    <button id="clearBtn">Čista ploča</button>
-    <button id="saveBtn">Snimi PNG</button>
-    <button id="emailBtn">Pošalji email</button>
-    <button id="pdfBtn">PDF</button>
-</div>
+    <div class="whiteboard-wrapper">
+      <div class="toolbar">
+        <label>Tool:</label>
+        <button class="btn-secondary" (click)="setTool('pen')">Pen</button>
+        <button class="btn-secondary" (click)="setTool('eraser')">Eraser</button>
 
-<canvas id="board" width="900" height="500"></canvas>
+        <label>Color:</label>
+        <input type="color" [(ngModel)]="penColor" />
 
-<footer>
-    <p>Web programiranje 2025 Internacionalna poslovno-informaciona akademija Tuzla</p>
-  </footer>
-<div id="emailModal" class="modal" style="display:none;">
-    <div class="modal-content">
-        <h3>Pošaljite Whiteboard</h3>
-        <label for="emailInput">Email:</label>
-        <input type="email" id="emailInput" placeholder="example@gmail.com" />
-        <div class="modal-buttons">
-            <button id="sendEmailBtn">Pošalji</button>
-            <button id="cancelEmailBtn">Poništi</button>
-        </div>
+        <label>Size:</label>
+        <input type="range" min="1" max="48" [(ngModel)]="penSize" />
+
+        <button class="btn-secondary" (click)="clearCanvas()">Clear</button>
+        <button class="btn-secondary" (click)="savePng()">Save PNG</button>
+        <button class="btn-secondary" (click)="exportPdf()">Save PDF</button>
+        <button class="btn-secondary" (click)="openEmailModal()">Email</button>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas #canvas id="wbCanvas" class="whiteboard-canvas" aria-label="Whiteboard"></canvas>
+      </div>
+
     </div>
+  </section>
+
+  <!-- Email modal -->
+  <div class="modal" *ngIf="showEmailModal">
+    <div class="modal-backdrop" (click)="closeEmailModal()"></div>
+    <div class="modal-content">
+      <h3>Send Whiteboard</h3>
+      <label class="field">
+        <span class="field-label">Email</span>
+        <input type="email" class="field-input" placeholder="Enter email" [(ngModel)]="email" />
+      </label>
+      <div class="modal-buttons">
+        <button class="btn-primary" (click)="sendEmail()">Send</button>
+        <button class="btn-secondary" (click)="closeEmailModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <footer class="app-footer">
+    <p>Web programiranje 2025 – IPI Akademija Tuzla</p>
+  </footer>
 </div>

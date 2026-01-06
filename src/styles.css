@@ -1,1 +1,404 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('./themes.css');
+
+/* Global reset / base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background-color: var(--bg);
+  color: var(--text);
+  line-height: 1.6; /* comfortable reading */
+}
+
+/* Paragraphs use monospace for retro feel */
+p {
+  font-family: ui-monospace, 'Courier New', 'Lucida Console', Monaco, monospace;
+  color: var(--text);
+  font-size: 0.95rem;
+  margin: 0 0 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.2px;
+}
+
+/* Utility klase koje koriste varijable iz tema */
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1;
+  padding: 16px;
+}
+
+/* Generic button i card, teme samo mijenjaju varijable */
+.btn {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  box-shadow: var(--btn-shadow);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--btn-shadow-hover);
+}
+
+.card {
+  border-radius: 16px;
+  padding: 16px;
+  background: var(--card-bg);
+  color: var(--card-text);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--card-border);
+}
+
+/* Inputs */
+input, select, textarea {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  color: var(--input-text);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+/* Links */
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ====================== RETRO LAYOUT OVERRIDES ====================== */
+/* These rules override layout components when retro theme is active */
+body.theme-retro header {
+  background: linear-gradient(180deg, rgba(255,78,205,0.06), rgba(34,211,238,0.03));
+  color: var(--text);
+  font-family: var(--font-main);
+  border-bottom: 1px solid rgba(255, 191, 255, 0.08);
+  box-shadow: 0 8px 30px rgba(255,78,205,0.06);
+}
+
+body.theme-retro header img {
+  height: 52px;
+  filter: drop-shadow(0 4px 8px rgba(255,78,205,0.12));
+}
+
+body.theme-retro nav a {
+  color: var(--text);
+  background: transparent;
+  border-radius: 10px;
+  padding: 0.45rem 0.9rem;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  font-weight: 700;
+}
+
+body.theme-retro nav a:hover,
+body.theme-retro nav a.active {
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  color: var(--btn-text);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(255,78,205,0.18);
+}
+
+/* Make primary buttons look more 'arcade' */
+body.theme-retro .btn {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 2px solid rgba(255,255,255,0.06);
+  border-radius: 999px;
+  box-shadow: var(--btn-shadow);
+  padding: 10px 18px;
+}
+body.theme-retro .btn:hover {
+  box-shadow: var(--btn-shadow-hover);
+  transform: translateY(-3px) scale(1.03);
+}
+
+/* Cards use neon borders and glow */
+body.theme-retro .card {
+  background: var(--card-bg);
+  color: var(--card-text);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+/* Footer style */
+footer {
+  background: var(--bg-alt);
+  color: var(--text);
+  padding: 1.25rem;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Theme selector tuned for retro */
+.theme-selector select {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,191,255,0.06);
+  color: var(--text);
+  font-family: var(--font-main);
+  padding: 0.35rem 0.6rem;
+}
+
+/* Small utility: emphasize active nav when retro */
+nav a[routerLink="/contact"] {
+  box-shadow: 0 8px 22px rgba(255,191,0,0.08);
+}
+
+/* ====================== CYBERPUNK LAYOUT OVERRIDES ====================== */
+body.theme-cyberpunk header {
+  background: linear-gradient(180deg, rgba(0,230,255,0.03), rgba(0,0,0,0.02));
+  color: var(--text);
+  font-family: var(--font-main);
+  border-bottom: 1px solid rgba(0,230,255,0.06);
+  box-shadow: 0 8px 40px rgba(0,230,255,0.03);
+}
+
+body.theme-cyberpunk header img {
+  height: 52px;
+  filter: drop-shadow(0 6px 18px rgba(0,230,255,0.08));
+}
+
+body.theme-cyberpunk nav a {
+  color: var(--text);
+  background: transparent;
+  border-radius: 10px;
+  padding: 0.45rem 0.9rem;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  font-weight: 700;
+}
+
+body.theme-cyberpunk nav a:hover,
+body.theme-cyberpunk nav a.active {
+  background: linear-gradient(90deg, var(--color-border), rgba(0,0,0,0.02));
+  color: var(--color-on-primary);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0,230,255,0.14);
+}
+
+/* Make primary buttons look neon */
+body.theme-cyberpunk .btn {
+  background: transparent;
+  color: var(--btn-text);
+  border: 2px solid var(--color-border);
+  border-radius: 999px;
+  box-shadow: 0 8px 34px rgba(0,0,0,0.35), 0 0 16px var(--color-border);
+  padding: 10px 18px;
+}
+body.theme-cyberpunk .btn:hover {
+  box-shadow: 0 12px 52px rgba(0,0,0,0.45), 0 0 34px var(--color-border);
+  transform: translateY(-3px) scale(1.02);
+}
+
+/* Cards use neon borders and glow */
+body.theme-cyberpunk .card {
+  background: var(--card-bg);
+  color: var(--card-text);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  border-radius: 12px;
+  padding: 16px;
+  border-image: linear-gradient(90deg, var(--color-border), rgba(255,255,255,0.02)) 1;
+}
+
+/* Theme selector tuned for cyberpunk */
+body.theme-cyberpunk .theme-selector select {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(0,230,255,0.06);
+  color: var(--text);
+  font-family: var(--font-main);
+  padding: 0.35rem 0.6rem;
+}
+
+/* Small utility: emphasize active nav when cyberpunk */
+nav a[routerLink="/contact"] {
+  box-shadow: 0 8px 22px rgba(0,230,255,0.06);
+}
+
+/* ====================== CLASSICAL LAYOUT OVERRIDES ====================== */
+body.theme-classical header {
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 2rem;
+  height: 96px;
+  background: var(--color-primary);
+  background-image: linear-gradient(180deg, var(--color-primary), #1e66e6);
+  color: var(--text);
+  font-family: var(--font-main);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  position: relative;
+}
+
+/* Logo */
+body.theme-classical header a img {
+  height: 64px;
+  margin-right: 20px;
+  filter: none;
+}
+
+/* Centered nav */
+body.theme-classical nav {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: center;
+}
+
+body.theme-classical nav ul {
+  display: flex;
+  gap: 1.2rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+body.theme-classical nav li a {
+  color: var(--color-on-primary);
+  background: transparent;
+  border-radius: 6px;
+  padding: 0.65rem 0.95rem;
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+body.theme-classical nav li a:hover,
+body.theme-classical nav li a.active {
+  background: rgba(255,255,255,0.12);
+  color: var(--color-on-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+}
+
+/* Right-side controls (theme selector / language button) */
+body.theme-classical .theme-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-left: 20px;
+}
+
+/* Make current-theme look like a bordered language button */
+body.theme-classical .theme-selector .current-theme {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.2);
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  color: var(--color-on-primary);
+  font-weight: 700;
+}
+
+body.theme-classical .mode-toggle { display: none; /* hide small dark toggle to simplify header */ }
+
+body.theme-classical .btn-logout {
+  background: transparent;
+  border: 2px solid rgba(255,255,255,0.08);
+  color: var(--color-on-primary);
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+}
+
+body.theme-classical .btn-logout:hover {
+  background: rgba(255,255,255,0.06);
+}
+
+body.theme-classical .btn {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 2px solid rgba(43,124,255,0.08);
+  border-radius: 8px;
+  box-shadow: var(--btn-shadow);
+  padding: 8px 14px;
+}
+body.theme-classical .btn:hover {
+  box-shadow: var(--btn-shadow-hover);
+  transform: translateY(-2px) scale(1.01);
+}
+
+body.theme-classical .card {
+  background: var(--card-bg);
+  color: var(--card-text);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+body.theme-classical .theme-selector select {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(43,124,255,0.06);
+  color: var(--text);
+  font-family: var(--font-main);
+  padding: 0.35rem 0.6rem;
+}
+
+/* Small utility: emphasize active nav when classical */
+nav a[routerLink="/contact"] {
+  box-shadow: 0 8px 22px rgba(43,124,255,0.06);
+}
+
+/* ====================== WHIMSICAL FOREST LAYOUT OVERRIDES ====================== */
+body.theme-whimsical-forest header {
+  background: linear-gradient(180deg, rgba(127,191,158,0.08), rgba(255,255,255,0.01));
+  color: var(--text);
+  font-family: var(--font-main);
+  border-bottom: none;
+  padding: 1rem 1.5rem;
+}
+
+body.theme-whimsical-forest header img {
+  height: 56px;
+  filter: none;
+}
+
+body.theme-whimsical-forest nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+body.theme-whimsical-forest nav a {
+  color: var(--color-text);
+  padding: 0.45rem 0.8rem;
+  border-radius: 6px;
+}
+
+body.theme-whimsical-forest nav a:hover,
+body.theme-whimsical-forest nav a.active {
+  background: rgba(127,191,158,0.12);
+  color: var(--color-primary);
+}
+
+/* Make auth card centered on page (for pages that show it) */
+body.theme-whimsical-forest .auth-card {
+  margin: 2.4rem auto;
+}
+
+/* Small utility: emphasize active nav when forest */
+nav a[routerLink="/contact"] {
+  box-shadow: 0 8px 22px rgba(127,191,158,0.06);
+}

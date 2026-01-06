@@ -1,8 +1,51 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="cyberpunk" data-mode="light">
 <head>
   <meta charset="utf-8">
   <title>WPProjekat</title>
+
+  <!-- Bootstrap theme as early as possible to avoid FOUC -->
+<script>
+  (function(){
+    try {
+      const raw = localStorage.getItem('user-theme');
+      let name, mode;
+      if (raw) {
+        try {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.name) { name = parsed.name; mode = parsed.mode; }
+          else if (raw === 'dark' || raw === 'light') { mode = raw; }
+          else { name = raw; }
+        } catch (e) {
+          if (raw === 'dark' || raw === 'light') mode = raw; else name = raw;
+        }
+      }
+
+      // Defaults to avoid flash of wrong theme
+      const DEFAULT_NAME = 'cyberpunk';
+      const DEFAULT_MODE = 'light';
+      const activeName = name || DEFAULT_NAME;
+      const activeMode = mode || DEFAULT_MODE;
+
+      const docEl = document.documentElement;
+      docEl.setAttribute('data-theme', activeName);
+      docEl.setAttribute('data-mode', activeMode);
+
+      // Ensure body class added as soon as document is ready
+      function addBodyClass() {
+        if (document.body) {
+          // remove existing theme- classes to avoid conflicts
+          Array.from(document.body.classList)
+            .filter(c => c.startsWith('theme-'))
+            .forEach(c => document.body.classList.remove(c));
+          document.body.classList.add('theme-' + activeName);
+        }
+      }
+      if (document.body) addBodyClass(); else document.addEventListener('DOMContentLoaded', addBodyClass);
+    } catch (e) { /* ignore */ }
+  })();
+</script>
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 

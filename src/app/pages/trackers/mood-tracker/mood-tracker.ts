@@ -1,40 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface MoodEntry {
-  id: number;
-  date: string;      // yyyy-mm-dd
-  mood: number;      // 1–5
-  note: string;
-}
+import { MoodService, MoodEntry } from '../../../services/mood';
 
 @Component({
   selector: 'app-mood-tracker',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './mood-tracker.html',
-  styleUrls: ['./mood-tracker.css']
+  styleUrls: ['./mood-tracker.css'],
 })
-export class MoodTrackerComponent {
+export class MoodTrackerComponent implements OnInit {
+  private moodService = inject(MoodService);
 
   moods = [
     { value: 1, label: '😢', text: 'Vrlo loše', colorClass: 'mood-very-bad' },
     { value: 2, label: '😕', text: 'Loše',      colorClass: 'mood-bad' },
     { value: 3, label: '😐', text: 'Ok',        colorClass: 'mood-ok' },
     { value: 4, label: '🙂', text: 'Dobro',     colorClass: 'mood-good' },
-    { value: 5, label: '😄', text: 'Odlično',   colorClass: 'mood-great' }
+    { value: 5, label: '😄', text: 'Odlično',   colorClass: 'mood-great' },
   ];
 
   entries: MoodEntry[] = [];
-  nextId = 1;
 
   date = this.today();
   selectedMood = 3;
   note = '';
 
-  constructor() {
-    this.loadFromStorage();
+  loading = false;
+
+  ngOnInit(): void {
+    this.loadEntries();
   }
 
   private today(): string {
@@ -45,47 +41,53 @@ export class MoodTrackerComponent {
     this.selectedMood = value;
   }
 
-  addEntry(): void {
+  async addEntry(): Promise<void> {
     if (!this.date) return;
-    const entry: MoodEntry = {
-      id: this.nextId++,
-      date: this.date,
-      mood: this.selectedMood,
-      note: this.note.trim()
-    };
-    this.entries.unshift(entry);
-    this.saveToStorage();
-
-    this.note = '';
+    this.loading = true;
+    try {
+      await this.moodService.addEntry({
+        date: this.date,
+        mood: this.selectedMood,
+        note: this.note.trim(),
+      });
+      await this.loadEntries();
+      this.note = '';
+    } catch (e) {
+      console.error(e);
+      alert('Greška pri spremanju raspoloženja.');
+    } finally {
+      this.loading = false;
+    }
   }
 
-  deleteEntry(id: number): void {
+  async deleteEntry(id?: string): Promise<void> {
+    if (!id) return;
     if (!confirm('Obrisati ovaj zapis raspoloženja?')) return;
-    this.entries = this.entries.filter(e => e.id !== id);
-    this.saveToStorage();
+    this.loading = true;
+    try {
+      await this.moodService.deleteEntry(id);
+      await this.loadEntries();
+    } catch (e) {
+      console.error(e);
+      alert('Greška pri brisanju zapisa.');
+    } finally {
+      this.loading = false;
+    }
   }
 
   getMoodMeta(mood: number) {
     return this.moods.find(m => m.value === mood) || this.moods[2];
   }
 
-  private saveToStorage(): void {
-    localStorage.setItem('moodEntries', JSON.stringify({
-      nextId: this.nextId,
-      entries: this.entries
-    }));
-  }
-
-  private loadFromStorage(): void {
-    const raw = localStorage.getItem('moodEntries');
-    if (!raw) return;
+  private async loadEntries(): Promise<void> {
+    this.loading = true;
     try {
-      const data = JSON.parse(raw) as { nextId: number; entries: MoodEntry[] };
-      this.entries = data.entries || [];
-      this.nextId = data.nextId || (this.entries.length + 1);
-    } catch {
+      this.entries = await this.moodService.getEntries();
+    } catch (e) {
+      console.error(e);
       this.entries = [];
-      this.nextId = 1;
+    } finally {
+      this.loading = false;
     }
   }
 }

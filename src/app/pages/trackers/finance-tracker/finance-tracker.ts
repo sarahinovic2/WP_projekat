@@ -1,41 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-type FinanceCategory =
-  | 'food'
-  | 'transport'
-  | 'goingOut'
-  | 'gifts'
-  | 'clothes'
-  | 'pets'
-  | 'special';
-
-interface FinanceTransaction {
-  id: number;
-  date: string;          // yyyy-mm-dd
-  amount: number;
-  category: FinanceCategory;
-  description: string;
-}
-
-interface MonthlyFinance {
-  year: number;
-  month: number;         // 0–11
-  income: number;
-  fixedExpenses: number;
-  transactions: FinanceTransaction[];
-  nextId: number;
-}
+import {
+  FinanceCategory,
+  FinanceTransaction,
+  MonthlyFinance,
+  FinanceService,
+} from '../../../services/finance';
 
 @Component({
   selector: 'app-finance-tracker',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './finance-tracker.html',
-  styleUrls: ['./finance-tracker.css']
+  styleUrls: ['./finance-tracker.css'],
 })
-export class FinanceTrackerComponent {
+export class FinanceTrackerComponent implements OnInit {
+  private financeService = inject(FinanceService);
 
   categories: { value: FinanceCategory; label: string }[] = [
     { value: 'food',      label: 'Hrana' },
@@ -44,13 +25,12 @@ export class FinanceTrackerComponent {
     { value: 'gifts',     label: 'Pokloni' },
     { value: 'clothes',   label: 'Odjeća' },
     { value: 'pets',      label: 'Ljubimci' },
-    { value: 'special',   label: 'Specijalni trošak' }
+    { value: 'special',   label: 'Specijalni trošak' },
   ];
 
   currentYear = new Date().getFullYear();
   currentMonth = new Date().getMonth(); // 0–11
 
-  // trenutno učitani mjesec
   model: MonthlyFinance = this.emptyMonth(this.currentYear, this.currentMonth);
 
   // forma za pojedinačni trošak
@@ -59,18 +39,14 @@ export class FinanceTrackerComponent {
   txCategory: FinanceCategory = 'food';
   txDescription = '';
 
-  constructor() {
-    this.loadCurrentMonth();
+  loading = false;
+
+  async ngOnInit(): Promise<void> {
+    await this.loadCurrentMonth();
   }
 
   private today(): string {
     return new Date().toISOString().slice(0, 10);
-  }
-
-  private monthKey(year: number, month: number): string {
-    // npr. "2026-01"
-    const m = (month + 1).toString().padStart(2, '0');
-    return `${year}-${m}`;
   }
 
   private emptyMonth(year: number, month: number): MonthlyFinance {
@@ -80,49 +56,55 @@ export class FinanceTrackerComponent {
       income: 0,
       fixedExpenses: 0,
       transactions: [],
-      nextId: 1
+      nextId: 1,
     };
   }
 
-  changeMonth(delta: number): void {
+  async changeMonth(delta: number): Promise<void> {
     const d = new Date(this.currentYear, this.currentMonth + delta, 1);
     this.currentYear = d.getFullYear();
     this.currentMonth = d.getMonth();
-    this.loadCurrentMonth();
+    await this.loadCurrentMonth();
   }
 
-  loadCurrentMonth(): void {
-    const key = this.monthKey(this.currentYear, this.currentMonth);
-    const raw = localStorage.getItem('finance-' + key);
-    if (!raw) {
-      this.model = this.emptyMonth(this.currentYear, this.currentMonth);
-      return;
-    }
+  private async loadCurrentMonth(): Promise<void> {
+    this.loading = true;
     try {
-      this.model = JSON.parse(raw) as MonthlyFinance;
-    } catch {
+      const existing = await this.financeService.loadMonth(
+        this.currentYear,
+        this.currentMonth
+      );
+      this.model = existing ?? this.emptyMonth(this.currentYear, this.currentMonth);
+    } catch (e) {
+      console.error(e);
       this.model = this.emptyMonth(this.currentYear, this.currentMonth);
+    } finally {
+      this.loading = false;
     }
   }
 
-  saveMonth(): void {
-    const key = this.monthKey(this.model.year, this.model.month);
-    localStorage.setItem('finance-' + key, JSON.stringify(this.model));
+  private async saveMonth(): Promise<void> {
+    try {
+      await this.financeService.saveMonth(this.model);
+    } catch (e) {
+      console.error(e);
+      alert('Greška pri spremanju finansija.');
+    }
   }
 
   // --- prihodi i fiksni troškovi ---
 
-  onIncomeChange(): void {
-    this.saveMonth();
+  async onIncomeChange(): Promise<void> {
+    await this.saveMonth();
   }
 
-  onFixedChange(): void {
-    this.saveMonth();
+  async onFixedChange(): Promise<void> {
+    await this.saveMonth();
   }
 
   // --- transakcije ---
 
-  addTransaction(): void {
+  async addTransaction(): Promise<void> {
     if (!this.txDate || !this.txAmount || this.txAmount <= 0) return;
 
     const tx: FinanceTransaction = {
@@ -130,21 +112,20 @@ export class FinanceTrackerComponent {
       date: this.txDate,
       amount: this.txAmount,
       category: this.txCategory,
-      description: this.txDescription.trim()
+      description: this.txDescription.trim(),
     };
 
     this.model.transactions.unshift(tx);
-    this.saveMonth();
+    await this.saveMonth();
 
-    // reset forme
     this.txAmount = null;
     this.txDescription = '';
   }
 
-  deleteTransaction(id: number): void {
+  async deleteTransaction(id: number): Promise<void> {
     if (!confirm('Obrisati ovaj trošak?')) return;
-    this.model.transactions = this.model.transactions.filter(t => t.id !== id);
-    this.saveMonth();
+    this.model.transactions = this.model.transactions.filter((t) => t.id !== id);
+    await this.saveMonth();
   }
 
   // --- analitika ---
@@ -161,7 +142,6 @@ export class FinanceTrackerComponent {
     return this.model.income - this.totalExpenses;
   }
 
-  // suma po kategoriji
   get sumByCategory(): Record<FinanceCategory, number> {
     const sums: Record<FinanceCategory, number> = {
       food: 0,
@@ -170,7 +150,7 @@ export class FinanceTrackerComponent {
       gifts: 0,
       clothes: 0,
       pets: 0,
-      special: 0
+      special: 0,
     };
     for (const t of this.model.transactions) {
       sums[t.category] += t.amount;
@@ -178,7 +158,6 @@ export class FinanceTrackerComponent {
     return sums;
   }
 
-  // procenti po kategoriji (od varijabilnih troškova)
   get percentByCategory(): Record<FinanceCategory, number> {
     const total = this.totalVariable;
     const perc: Record<FinanceCategory, number> = {
@@ -188,22 +167,24 @@ export class FinanceTrackerComponent {
       gifts: 0,
       clothes: 0,
       pets: 0,
-      special: 0
+      special: 0,
     };
     if (total <= 0) return perc;
     const sums = this.sumByCategory;
-    (Object.keys(sums) as FinanceCategory[]).forEach(cat => {
-      perc[cat] = +( (sums[cat] / total) * 100 ).toFixed(1);
+    (Object.keys(sums) as FinanceCategory[]).forEach((cat) => {
+      perc[cat] = +((sums[cat] / total) * 100).toFixed(1);
     });
     return perc;
   }
 
   getMonthLabel(): string {
-    return new Date(this.currentYear, this.currentMonth, 1)
-      .toLocaleString('default', { month: 'long', year: 'numeric' });
+    return new Date(this.currentYear, this.currentMonth, 1).toLocaleString(
+      'default',
+      { month: 'long', year: 'numeric' }
+    );
   }
 
   categoryLabel(cat: FinanceCategory): string {
-    return this.categories.find(c => c.value === cat)?.label || cat;
+    return this.categories.find((c) => c.value === cat)?.label || cat;
   }
 }

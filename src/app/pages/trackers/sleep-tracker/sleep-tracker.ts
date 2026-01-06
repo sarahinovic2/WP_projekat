@@ -1,26 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface SleepEntry {
-  id: number;
-  date: string;       // ISO string yyyy-mm-dd
-  hours: number;      // broj sati
-  rating: number;     // 1–5
-  note: string;
-}
+import { SleepService, SleepEntry } from '../../../services/sleep';
 
 @Component({
   selector: 'app-sleep-tracker',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './sleep-tracker.html',
-  styleUrls: ['./sleep-tracker.css']
+  styleUrls: ['./sleep-tracker.css'],
 })
-export class SleepTrackerComponent {
+export class SleepTrackerComponent implements OnInit {
+  private sleepService = inject(SleepService);
 
   entries: SleepEntry[] = [];
-  nextId = 1;
 
   // forma
   date = this.today();
@@ -28,10 +21,10 @@ export class SleepTrackerComponent {
   rating = 3;
   note = '';
 
-  private isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  loading = false;
 
-  constructor() {
-    if (this.isBrowser) this.loadFromStorage();
+  ngOnInit(): void {
+    this.loadEntries();
   }
 
   private today(): string {
@@ -45,51 +38,52 @@ export class SleepTrackerComponent {
     return 'Odlično';
   }
 
-  addEntry(): void {
+  async addEntry(): Promise<void> {
     if (!this.date || this.hours <= 0) return;
-
-    const entry: SleepEntry = {
-      id: this.nextId++,
-      date: this.date,
-      hours: this.hours,
-      rating: this.rating,
-      note: this.note.trim()
-    };
-
-    this.entries.unshift(entry);  // novi zapis na vrh
-    this.saveToStorage();
-
-    // reset forme (datum ostaje današnji)
-    this.hours = 8;
-    this.rating = 3;
-    this.note = '';
-  }
-
-  deleteEntry(id: number): void {
-    if (!confirm('Obrisati ovaj zapis o spavanju?')) return;
-    this.entries = this.entries.filter(e => e.id !== id);
-    this.saveToStorage();
-  }
-
-  private saveToStorage(): void {
-    if (!this.isBrowser) return;
-    localStorage.setItem('sleepEntries', JSON.stringify({
-      nextId: this.nextId,
-      entries: this.entries
-    }));
-  }
-
-  private loadFromStorage(): void {
-    if (!this.isBrowser) return;
-    const raw = localStorage.getItem('sleepEntries');
-    if (!raw) return;
+    this.loading = true;
     try {
-      const data = JSON.parse(raw) as { nextId: number; entries: SleepEntry[] };
-      this.entries = data.entries || [];
-      this.nextId = data.nextId || (this.entries.length + 1);
-    } catch {
+      await this.sleepService.addEntry({
+        date: this.date,
+        hours: this.hours,
+        rating: this.rating,
+        note: this.note.trim(),
+      });
+      await this.loadEntries();
+      this.hours = 8;
+      this.rating = 3;
+      this.note = '';
+    } catch (e) {
+      console.error(e);
+      alert('Greška pri spremanju zapisa.');
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  async deleteEntry(id?: string): Promise<void> {
+    if (!id) return;
+    if (!confirm('Obrisati ovaj zapis o spavanju?')) return;
+    this.loading = true;
+    try {
+      await this.sleepService.deleteEntry(id);
+      await this.loadEntries();
+    } catch (e) {
+      console.error(e);
+      alert('Greška pri brisanju zapisa.');
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  private async loadEntries(): Promise<void> {
+    this.loading = true;
+    try {
+      this.entries = await this.sleepService.getEntries();
+    } catch (e) {
+      console.error(e);
       this.entries = [];
-      this.nextId = 1;
+    } finally {
+      this.loading = false;
     }
   }
 }

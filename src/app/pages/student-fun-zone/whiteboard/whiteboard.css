@@ -1,0 +1,161 @@
+.page {
+  padding: 1.5rem 0;
+}
+
+.whiteboard-card {
+  padding: 1.5rem;
+}
+
+/* Header */
+
+.whiteboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.page-subtitle {
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Toolbar */
+
+.toolbar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-secondary {
+  padding: 0.45rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-secondary.danger {
+  background: #ef4444;
+  border-color: #b91c1c;
+  color: #fff;
+}
+
+/* Vision board */
+
+.whiteboard-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.toolbar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.canvas-wrap {
+  position: relative;
+  border-radius: 12px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  background: var(--color-surface, #ffffff);
+  overflow: hidden;
+  min-height: 420px;
+}
+
+.whiteboard-canvas {
+  display: block;
+  width: 100%;
+  height: 420px;
+  touch-action: none; /* prevent scrolling while drawing */
+  background: transparent;
+}
+
+/* modal reuse styles */
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 420px;
+  padding: 1rem;
+  border-radius: 10px;
+  background: var(--color-surface, #ffffff);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.25);
+}
+
+.field {
+  display:flex;
+  flex-direction:column;
+  gap:0.5rem;
+}
+
+.field-input { padding:0.6rem; border-radius:6px; border:1px solid var(--color-border,#d1d5db);}
+
+/* Sticky note */
+
+.sticky-note {
+  position: absolute;
+  width: 180px;
+  min-height: 160px;
+  padding: 0.75rem;
+  border-radius: 6px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  cursor: grab;
+  transform: rotate(-1.5deg);
+}
+
+.sticky-note:nth-child(even) {
+  transform: rotate(1.5deg);
+}
+
+.sticky-note:active {
+  cursor: grabbing;
+}
+
+/* Text inside */
+
+.sticky-note textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  resize: none;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: #1f2937;
+  outline: none;
+}
+
+/* Footer */
+
+.app-footer {
+  margin-top: 1rem;
+  text-align: center;
+  opacity: 0.6;
+  font-size: 0.85rem;
+}

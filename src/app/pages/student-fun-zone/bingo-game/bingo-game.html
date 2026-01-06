@@ -1,27 +1,74 @@
-<div class="content" id="contentToConvert">
-  <h1>BINGO</h1>
-  <table id="bingoTable" style="border-spacing:30px;"></table>
-  <br />
-  <p>Skupi 5 brojeva zaredom - BINGO!</p>
-  <p>SRETNO!!</p>
+<div class="page app-main">
+  <section class="card bingo-card" id="contentToConvert">
+    <h1 class="page-title">BINGO</h1>
 
-  <div class="bingo-controls">
-    <button id="newCardBtn" (click)="generateNewCard()">Nova karta</button>
-    <button id="downloadPdfBtn" (click)="downloadPdf()">Preuzmi PDF</button>
-    <button id="emailBtn" (click)="openEmailModal()">Pošalji mejlom</button>
-  </div>
+    <div class="bingo-board-wrapper" [class.locked]="showBingoModal">
+      <table id="bingoTable" aria-label="Bingo tabla"></table>
+    </div>
 
-  <div id="emailModal" class="modal" *ngIf="showEmailModal">
-    <div class="modal-content">
-      <h3>Pošaljite Bingo kartu</h3>
-      <label for="emailInput">Email:</label>
-      <input type="email" id="emailInput" [(ngModel)]="email" placeholder="Unesite email..." />
-      <div class="modal-buttons">
-        <button (click)="sendEmail()">Pošalji</button>
-        <button (click)="closeEmailModal()">Poništi</button>
+    <p class="bingo-text">Skupi 5 brojeva zaredom - BINGO!</p>
+    <p class="bingo-text">SRETNO!!</p>
+
+    <div class="bingo-controls">
+      <button
+        id="newCardBtn"
+        class="btn-primary"
+        (click)="generateNewCard()">
+        Nova karta
+      </button>
+      <button
+        id="downloadPdfBtn"
+        class="btn-secondary"
+        (click)="downloadPdf()">
+        Preuzmi PDF
+      </button>
+      <button
+        id="emailBtn"
+        class="btn-secondary"
+        (click)="openEmailModal()">
+        Pošalji mejlom
+      </button>
+    </div>
+
+    <!-- Bingo win modal -->
+    <div
+      id="bingoWinModal"
+      class="modal"
+      *ngIf="showBingoModal">
+      <div class="modal-backdrop"></div>
+      <div class="modal-content">
+        <h3>Čestitamo!</h3>
+        <p>Osvojili ste BINGO! Nova karta će se automatski generisati.</p>
+        <div class="modal-buttons">
+          <button class="btn-primary" (click)="closeBingoModal()">OK</button>
+        </div>
       </div>
     </div>
-  </div>
+
+    <!-- Modal -->
+    <div
+      id="emailModal"
+      class="modal"
+      *ngIf="showEmailModal">
+      <div class="modal-backdrop" (click)="closeEmailModal()"></div>
+      <div class="modal-content">
+        <h3>Pošaljite Bingo kartu</h3>
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input
+            type="email"
+            class="field-input"
+            id="emailInput"
+            [(ngModel)]="email"
+            placeholder="Unesite email..." />
+        </label>
+        <div class="modal-buttons">
+          <button class="btn-primary" (click)="sendEmail()">Pošalji</button>
+          <button class="btn-secondary" (click)="closeEmailModal()">Poništi</button>
+        </div>
+      </div>
+    </div>
+  </section>
 </div>
 
-<footer></footer>
+<footer class="app-footer"></footer>

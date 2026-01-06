@@ -1,91 +1,91 @@
-<h2>Water Tracker</h2>
-<p>
-  Cilj je popiti barem 2L vode (10 čaša po 0.2L) dnevno. Stay hydrated!!!!
-</p>
-
-<!-- Odabrani dan i statistika -->
-<div class="water-summary">
-  <label>
-    Datum:
-    <input type="date" [(ngModel)]="selectedDate" />
-  </label>
-
-  <div class="stats">
-    <p>Čaše: {{ glassesForSelectedDate }} / {{ maxGlassesPerDay }}</p>
-    <p>Litara: {{ litersForSelectedDate }} L (cilj 2L)</p>
-    <p>
-      Status:
-      <span *ngIf="glassesForSelectedDate >= glassesPerDayTarget; else notReached">
-        Uspješan dan 🎉
-      </span>
-      <ng-template #notReached>
-        Još nisi dosegao/la 2L.
-      </ng-template>
+<div class="page">
+  <header class="page-header">
+    <h1 class="page-title">Water Tracker</h1>
+    <p class="page-subtitle">
+      Cilj je popiti barem 2L vode (10 čaša po 0.2L) dnevno. Stay hydrated!
     </p>
-  </div>
-</div>
+  </header>
 
-<!-- 20 čaša -->
-<div class="glasses-row">
-  <div
-    *ngFor="let g of [].constructor(maxGlassesPerDay); index as i"
-    class="glass"
-    [class.filled]="isGlassFilled(i + 1)"
-    (click)="setGlasses(i + 1)"
-  >
-    {{ i + 1 }}
-  </div>
-</div>
+  <!-- Odabrani dan i statistika -->
+  <section class="card water-card">
+    <div class="water-summary">
+      <label class="field">
+        <span class="field-label">Datum</span>
+        <input
+          class="field-input"
+          type="date"
+          [(ngModel)]="selectedDate" />
+      </label>
 
-<hr />
-
-<!-- Kalendar -->
-<h3>Kalendar</h3>
-<div class="calendar-controls">
-  <button type="button" (click)="changeMonth(-1)">&laquo;</button>
-  <span>{{ monthName }} {{ selectedYear }}</span>
-  <button type="button" (click)="changeMonth(1)">&raquo;</button>
-</div>
-
-<table class="water-calendar">
-  <thead>
-    <tr>
-      <th>Pon</th>
-      <th>Uto</th>
-      <th>Sri</th>
-      <th>Čet</th>
-      <th>Pet</th>
-      <th>Sub</th>
-      <th>Ned</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let week of calendarDays | slice:0; let i = index">
-    </tr>
-  </tbody>
-</table>
-
-<div class="calendar-grid">
-  <div class="weekday">Pon</div>
-  <div class="weekday">Uto</div>
-  <div class="weekday">Sri</div>
-  <div class="weekday">Čet</div>
-  <div class="weekday">Pet</div>
-  <div class="weekday">Sub</div>
-  <div class="weekday">Ned</div>
-
-  <ng-container *ngFor="let day of calendarDays">
-    <div
-      class="calendar-cell"
-      *ngIf="day; else emptyCell"
-      [class.success]="isSuccess(toDateString(day))"
-      [class.selected]="toDateString(day) === selectedDate"
-      (click)="selectDateFromCalendar(day)"
-    >
-      {{ day.getDate() }}
+      <div class="stats">
+        <p>Čaše: {{ glassesForSelectedDate }} / {{ maxGlassesPerDay }}</p>
+        <p>Litara: {{ litersForSelectedDate }} L (cilj 2L)</p>
+        <p>
+          Status:
+          <span *ngIf="glassesForSelectedDate >= glassesPerDayTarget; else notReached">
+            Uspješan dan 🎉
+          </span>
+          <ng-template #notReached>
+            Još nisi dosegao/la 2L.
+          </ng-template>
+        </p>
+      </div>
     </div>
-    <ng-template #emptyCell>
-      <div class="calendar-cell empty"></div>
-    </ng-template>
-  </ng-container>
+
+    <!-- 20 čaša -->
+    <div class="glasses-row">
+      <div
+        *ngFor="let g of [].constructor(maxGlassesPerDay); index as i"
+        class="glass"
+        [class.filled]="isGlassFilled(i + 1)"
+        (click)="setGlasses(i + 1)">
+        {{ i + 1 }}
+      </div>
+    </div>
+  </section>
+
+  <!-- Kalendar -->
+  <section class="card water-card">
+    <h3 class="section-title">Kalendar</h3>
+
+    <div class="calendar-controls">
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="changeMonth(-1)">
+        &laquo;
+      </button>
+      <span class="month-label">{{ monthName }} {{ selectedYear }}</span>
+      <button
+        type="button"
+        class="btn-secondary"
+        (click)="changeMonth(1)">
+        &raquo;
+      </button>
+    </div>
+
+    <div class="calendar-grid">
+      <div class="weekday">Pon</div>
+      <div class="weekday">Uto</div>
+      <div class="weekday">Sri</div>
+      <div class="weekday">Čet</div>
+      <div class="weekday">Pet</div>
+      <div class="weekday">Sub</div>
+      <div class="weekday">Ned</div>
+
+      <ng-container *ngFor="let day of calendarDays">
+        <div
+          class="calendar-cell"
+          *ngIf="day; else emptyCell"
+          [class.success]="isSuccess(toDateString(day))"
+          [class.selected]="toDateString(day) === selectedDate"
+          (click)="selectDateFromCalendar(day)">
+          {{ day.getDate() }}
+        </div>
+        <ng-template #emptyCell>
+          <div class="calendar-cell empty"></div>
+        </ng-template>
+      </ng-container>
+    </div>
+  </section>
 </div>

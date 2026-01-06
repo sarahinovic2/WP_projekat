@@ -1,24 +1,38 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { Component } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { ThemeService } from '../../services/theme.service';
+import { AuthService } from '../../services/auth';
 
-import { LoginComponent } from './login';
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [RouterLink, CommonModule, FormsModule],
+  templateUrl: './login.html',
+  styleUrls: ['./login.css'],
+})
+export class LoginComponent {
+  email = '';
+  password = '';
 
-describe('LoginComponent', () => {
-  let component: LoginComponent;
-  let fixture: ComponentFixture<LoginComponent>;
+  constructor(
+    private themeService: ThemeService,
+    private auth: AuthService,
+    private router: Router
+  ) {}
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [LoginComponent, RouterTestingModule]
-    })
-    .compileComponents();
-
-    fixture = TestBed.createComponent(LoginComponent);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  onSubmit(): void {
+    this.auth.login(this.email, this.password).subscribe({
+      next: (user) => {
+        // TODO: kasnije ćemo ovdje učitati theme iz Firestore-a.
+        alert('Uspješna prijava.');
+        this.router.navigate(['/dashboard']); // promijeni u svoju početnu rutu
+      },
+      error: (err) => {
+        console.error('Login error', err);
+        alert('Greška pri prijavi: ' + (err.message || 'pokušaj ponovo'));
+      },
+    });
+  }
+}

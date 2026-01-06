@@ -42,23 +42,29 @@ export class BingoGameComponent implements AfterViewInit {
 
         if (i === 2 && j === 2) {
           cell.textContent = '★';
-          cell.classList.add('free', 'marked');
+          cell.classList.add('free', 'marked', 'bingo-cell');
         } else {
           cell.textContent = String(numbers[index]);
+          cell.classList.add('bingo-cell');
         }
 
-        cell.style.border = '1px solid #000';
-        cell.style.padding = '10px';
-        cell.style.textAlign = 'center';
-        cell.style.cursor = 'pointer';
+        // make cells keyboard accessible and use CSS classes for styling
+        cell.tabIndex = 0;
 
-        cell.addEventListener('click', () => {
+        const toggleMark = () => {
           if (!cell.classList.contains('free')) {
             cell.classList.toggle('marked');
             if (this.checkBingo()) {
-              alert('BINGO! Čestitamo!');
-              this.generateCard();
+              this.handleBingo();
             }
+          }
+        };
+
+        cell.addEventListener('click', toggleMark);
+        cell.addEventListener('keydown', (e: KeyboardEvent) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            toggleMark();
           }
         });
       }
@@ -108,6 +114,28 @@ export class BingoGameComponent implements AfterViewInit {
 
   closeEmailModal(): void {
     this.showEmailModal = false;
+  }
+
+  // Bingo win modal state and handlers
+  showBingoModal = false;
+
+  handleBingo(): void {
+    if (this.showBingoModal) return; // already handling
+    this.showBingoModal = true;
+
+    // Auto-restart the card after a short delay so user sees the message
+    setTimeout(() => {
+      this.generateCard();
+    }, 1500);
+
+    // Auto-close the modal shortly after
+    setTimeout(() => {
+      this.showBingoModal = false;
+    }, 2200);
+  }
+
+  closeBingoModal(): void {
+    this.showBingoModal = false;
   }
 
   async sendEmail(): Promise<void> {

@@ -1,0 +1,154 @@
+.page {
+  padding: 1.5rem 0;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.page-subtitle {
+  margin: 0;
+  opacity: 0.8;
+}
+
+.movie-card {
+  margin-bottom: 1.25rem;
+}
+
+/* Mjesec */
+.movie-header {
+  margin-bottom: 1rem;
+}
+
+/* Forma – dvije kolone */
+.movie-form {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.6fr);
+  gap: 1.25rem;
+}
+
+.poster-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.poster-preview,
+.poster-placeholder {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.03);
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.poster-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Polja */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.field-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.field-input {
+  padding: 0.45rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.field-input[type="file"] {
+  padding: 0.3rem 0.2rem;
+}
+
+/* Info kolona */
+.info-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.buttons-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
+.btn-secondary {
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+/* Pregled godine */
+.year-line {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.month-card {
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.month-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.month-poster {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.month-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.month-title {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.month-empty {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}

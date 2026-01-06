@@ -1,27 +1,43 @@
-<h2>Login</h2>
+<div class="page auth-page">
+  <div class="auth-layout">
+    <section class="card auth-card">
+      <h1 class="page-title">Login</h1>
 
-<form>
-  <label>Ime</label>
-  <input type="text" placeholder="Unesite ime">
+      <form (ngSubmit)="onSubmit()" #loginForm="ngForm" class="auth-form">
+        <label class="field">
+          <span class="field-label">Email</span>
+          <input
+            class="field-input"
+            name="email"
+            [(ngModel)]="email"
+            type="email"
+            placeholder="Unesite email"
+            required />
+        </label>
 
-  <label>Email</label>
-  <input type="email" placeholder="Unesite email">
+        <label class="field">
+          <span class="field-label">Password</span>
+          <input
+            class="field-input"
+            name="password"
+            [(ngModel)]="password"
+            type="password"
+            placeholder="Unesite password"
+            required />
+        </label>
 
-  <label>Password</label>
-  <input type="password" placeholder="Unesite password">
+        <button
+          class="btn-primary"
+          [disabled]="!loginForm.form.valid"
+          type="submit">
+          Login
+        </button>
 
-  <label>Izbor teme</label>
-  <select>
-    <option>zelena</option>
-    <option>plava</option>
-    <option>roza</option>
-    <option>tamna/dark</option>
-  </select>
-
-  <button type="submit">Login</button>
-
-  <p>
-    Nemate račun?
-    <a routerLink="/register">Register</a>
-  </p>
-</form>
+        <p class="auth-switch">
+          Nemate račun?
+          <a routerLink="/register">Register</a>
+        </p>
+      </form>
+    </section>
+  </div>
+</div>

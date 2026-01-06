@@ -1,177 +1,228 @@
 import { Component, AfterViewInit, ElementRef, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 declare const html2canvas: any;
-declare const jspdf: any;
 
 @Component({
   selector: 'app-whiteboard',
   standalone: true,
-  imports: [FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './whiteboard.html',
   styleUrls: ['./whiteboard.css']
 })
+
 export class WhiteboardComponent implements AfterViewInit {
-
-  @ViewChild('boardCanvas') boardCanvas!: ElementRef<HTMLCanvasElement>;
-
-  color = '#000000';
-  brushSize = 5;
-  isErasing = false;
+  @ViewChild('canvas', { static: false }) canvasRef?: ElementRef<HTMLCanvasElement>;
 
   showEmailModal = false;
   email = '';
 
-  private ctx!: CanvasRenderingContext2D | null;
+  penColor = '#111827';
+  penSize = 4;
+  tool: 'pen' | 'eraser' = 'pen';
+
+  private ctx: CanvasRenderingContext2D | null = null;
   private drawing = false;
   private lastX = 0;
   private lastY = 0;
 
   ngAfterViewInit(): void {
-    const canvas = this.boardCanvas?.nativeElement;
+    if (typeof document === 'undefined') return;
+    const canvas = this.canvasRef?.nativeElement;
     if (!canvas) return;
 
+    this.setupCanvas(canvas);
+    window.addEventListener('resize', () => this.resizeCanvas(canvas));
+    this.resizeCanvas(canvas);
+  }
+
+  private setupCanvas(canvas: HTMLCanvasElement): void {
     this.ctx = canvas.getContext('2d');
+    if (!this.ctx) return;
 
-    // opcionalno, prilagodi dimenzije
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+    // Fill background white so exported PNGs have a solid background
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Pointer events
+    canvas.addEventListener('pointerdown', (e: PointerEvent) => this.start(e, canvas));
+    canvas.addEventListener('pointermove', (e: PointerEvent) => this.move(e, canvas));
+    canvas.addEventListener('pointerup', () => this.end());
+    canvas.addEventListener('pointercancel', () => this.end());
   }
 
-  // --- crtanje ---
+  private resizeCanvas(canvas: HTMLCanvasElement): void {
+    // preserve content by copying to temporary canvas
+    const temp = document.createElement('canvas');
+    temp.width = canvas.width;
+    temp.height = canvas.height;
+    const tctx = temp.getContext('2d');
+    if (tctx && this.ctx) tctx.drawImage(canvas, 0, 0);
 
-  startDrawing(event: MouseEvent | TouchEvent): void {
+    const ratio = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(canvas.clientWidth * ratio);
+    canvas.height = Math.floor(canvas.clientHeight * ratio);
+
+    this.ctx = canvas.getContext('2d');
+    if (!this.ctx) return;
+    this.ctx.scale(ratio, ratio);
+
+    // redraw background and previous content
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.fillRect(0, 0, canvas.width / ratio, canvas.height / ratio);
+    if (tctx) this.ctx.drawImage(temp, 0, 0, canvas.width / ratio, canvas.height / ratio);
+  }
+
+  private start(e: PointerEvent, canvas: HTMLCanvasElement): void {
     this.drawing = true;
-    const canvas = this.boardCanvas.nativeElement;
     const rect = canvas.getBoundingClientRect();
+    this.lastX = e.clientX - rect.left;
+    this.lastY = e.clientY - rect.top;
 
-    const { clientX, clientY } = this.getClientXY(event);
+    // set tool
+    if (this.tool === 'eraser') {
+      if (this.ctx) {
+        this.ctx.globalCompositeOperation = 'destination-out';
+        this.ctx.lineWidth = this.penSize * 2;
+        this.ctx.lineCap = 'round';
+      }
+    } else {
+      if (this.ctx) {
+        this.ctx.globalCompositeOperation = 'source-over';
+        this.ctx.strokeStyle = this.penColor;
+        this.ctx.lineWidth = this.penSize;
+        this.ctx.lineJoin = 'round';
+        this.ctx.lineCap = 'round';
+      }
+    }
 
-    this.lastX = (clientX - rect.left) * (canvas.width / rect.width);
-    this.lastY = (clientY - rect.top) * (canvas.height / rect.height);
+    if (this.ctx) {
+      this.ctx.beginPath();
+      this.ctx.moveTo(this.lastX, this.lastY);
+    }
+
+    try { (canvas as any).setPointerCapture?.((e as any).pointerId); } catch {}
   }
 
-  endDrawing(): void {
-    this.drawing = false;
-  }
-
-  draw(event: MouseEvent | TouchEvent): void {
+  private move(e: PointerEvent, canvas: HTMLCanvasElement): void {
     if (!this.drawing || !this.ctx) return;
-
-    const canvas = this.boardCanvas.nativeElement;
     const rect = canvas.getBoundingClientRect();
-    const scaleX = canvas.width / rect.width;
-    const scaleY = canvas.height / rect.height;
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-    const { clientX, clientY } = this.getClientXY(event);
-
-    const x = (clientX - rect.left) * scaleX;
-    const y = (clientY - rect.top) * scaleY;
-
-    this.ctx.strokeStyle = this.isErasing ? 'black' : this.color;
-    this.ctx.lineWidth = this.brushSize;
-    this.ctx.lineCap = 'round';
-
-    this.ctx.beginPath();
-    this.ctx.moveTo(this.lastX, this.lastY);
     this.ctx.lineTo(x, y);
     this.ctx.stroke();
 
     this.lastX = x;
     this.lastY = y;
-
-    if (event instanceof TouchEvent) {
-      event.preventDefault();
-    }
   }
 
-  private getClientXY(event: MouseEvent | TouchEvent): { clientX: number; clientY: number } {
-    if (event instanceof MouseEvent) {
-      return { clientX: event.clientX, clientY: event.clientY };
-    }
-    const touch = event.touches[0] || event.changedTouches[0];
-    return { clientX: touch.clientX, clientY: touch.clientY };
+  private end(): void {
+    this.drawing = false;
+    if (this.ctx) this.ctx.closePath();
   }
 
-  onColorChange(newColor: string): void {
-    this.color = newColor;
-    this.isErasing = false;
-  }
+  setTool(tool: 'pen' | 'eraser') { this.tool = tool; }
 
-  toggleEraser(): void {
-    this.isErasing = !this.isErasing;
-  }
-
-  clearBoard(): void {
-    const canvas = this.boardCanvas.nativeElement;
-    if (!this.ctx) return;
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+  clearCanvas() {
+    const canvas = this.canvasRef?.nativeElement;
+    if (!canvas || !this.ctx) return;
+    const ratio = window.devicePixelRatio || 1;
+    this.ctx.setTransform(1,0,0,1,0,0);
+    this.ctx.fillStyle = '#ffffff';
+    this.ctx.fillRect(0, 0, canvas.width / ratio, canvas.height / ratio);
   }
 
   savePng(): void {
-    const canvas = this.boardCanvas.nativeElement;
-    const image = canvas.toDataURL('image/png');
+    const canvas = this.canvasRef?.nativeElement;
+    if (!canvas) return;
+    const png = canvas.toDataURL('image/png');
     const link = document.createElement('a');
-    link.href = image;
+    link.href = png;
     link.download = 'whiteboard.png';
+    document.body.appendChild(link);
     link.click();
+    link.remove();
   }
 
-  // --- EMAIL (mailto varijanta) ---
+  async exportPdf(): Promise<void> {
+    const canvas = this.canvasRef?.nativeElement;
+    if (!canvas || typeof html2canvas === 'undefined') {
+      alert('html2canvas nije učitan.');
+      return;
+    }
 
-  openEmailModal(): void {
-    this.showEmailModal = true;
-    this.email = '';
+    const rendered = await html2canvas(canvas, { scale: 2 });
+    const imgData = rendered.toDataURL('image/png');
+
+    const pdfLib = (window as any).jspdf;
+    if (!pdfLib || !pdfLib.jsPDF) { alert('jsPDF nije učitan.'); return; }
+
+    const pdf = new pdfLib.jsPDF('l', 'pt', 'a4');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    const img = new Image();
+    img.src = imgData;
+    await new Promise(res => (img.onload = res));
+
+    const ratio = Math.min(pageWidth / img.width, pageHeight / img.height);
+    const imgWidth = img.width * ratio;
+    const imgHeight = img.height * ratio;
+    const marginX = (pageWidth - imgWidth) / 2;
+    const marginY = 20;
+
+    pdf.addImage(imgData, 'PNG', marginX, marginY, imgWidth, imgHeight);
+    pdf.save('whiteboard.pdf');
   }
 
-  closeEmailModal(): void {
+  openEmailModal() { this.showEmailModal = true; this.email = ''; }
+  closeEmailModal() { this.showEmailModal = false; }
+
+  async sendEmail() {
+    const email = this.email.trim();
+    if (!email) return;
+
+    // If html2canvas not available, fallback to mailto with text message
+    if (typeof html2canvas === 'undefined') {
+      const subject = encodeURIComponent('Whiteboard');
+      const body = encodeURIComponent('Whiteboard saved from IPI app.');
+      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+      this.showEmailModal = false;
+      return;
+    }
+
+    try {
+      const canvas = this.canvasRef?.nativeElement;
+      if (!canvas) throw new Error('Canvas not found');
+      const rendered = await html2canvas(canvas, { scale: 2 });
+      const png = rendered.toDataURL('image/png');
+      const base64 = png.split(',')[1];
+
+      const form = new URLSearchParams();
+      form.append('filename', 'whiteboard.png');
+      form.append('filedata', base64);
+      form.append('to', email);
+      form.append('subject', 'Whiteboard');
+      form.append('message', 'Sent from IPI Whiteboard');
+
+      const res = await fetch('/root/StudentFunZone/send_mail.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+        body: form.toString()
+      });
+
+      const text = await res.text();
+      if (res.ok) alert('Email sent!'); else alert('Send failed: ' + text);
+    } catch (err) {
+      console.error(err);
+      alert('Error sending — fallback to mailto.');
+      const subject = encodeURIComponent('Whiteboard');
+      const body = encodeURIComponent('Whiteboard saved from IPI app.');
+      window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    }
+
     this.showEmailModal = false;
-  }
-
-  async sendEmail(): Promise<void> {
-    const to = this.email.trim();
-    if (!to) return;
-
-    const canvas = this.boardCanvas.nativeElement;
-
-    // bez backenda: samo mailto sa base64 u body (jednostavnije rješenje)
-    const img = canvas.toDataURL('image/png');
-    const subject = encodeURIComponent('Whiteboard crtez');
-    const body = encodeURIComponent('Crtanje:\n\n' + img);
-    window.location.href = `mailto:${encodeURIComponent(to)}?subject=${subject}&body=${body}`;
-
-    this.showEmailModal = false;
-  }
-
-  // --- PDF ---
-
-  savePdf(): void {
-    const canvas = this.boardCanvas.nativeElement;
-    if (typeof html2canvas === 'undefined') return;
-
-    html2canvas(canvas).then((canvasImage: HTMLCanvasElement) => {
-      const imgData = canvasImage.toDataURL('image/png');
-
-      const pdfLib = (window as any).jspdf;
-      if (!pdfLib || !pdfLib.jsPDF) {
-        alert('jsPDF nije učitan.');
-        return;
-      }
-
-      const pdf = new pdfLib.jsPDF('l', 'mm', 'a4');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-
-      let imgWidth = pageWidth;
-      let imgHeight = (canvas.height / canvas.width) * imgWidth;
-
-      if (imgHeight > pageHeight) {
-        imgHeight = pageHeight;
-        imgWidth = (canvas.width / canvas.height) * imgHeight;
-      }
-
-      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-      pdf.save('whiteboard.pdf');
-    });
   }
 }

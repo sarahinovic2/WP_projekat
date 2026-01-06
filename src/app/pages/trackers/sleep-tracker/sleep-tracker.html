@@ -1,62 +1,101 @@
-<h2>Sleep Tracker</h2>
-<p>Zabilježi koliko si spavala/spavao.</p>
+<div class="page">
+  <header class="page-header">
+    <h1 class="page-title">Sleep Tracker</h1>
+    <p class="page-subtitle">
+      Zabilježi koliko si spavala/spavao i kako si se osjećala.
+    </p>
+  </header>
 
-<form (ngSubmit)="addEntry()" #sleepForm="ngForm" class="sleep-form">
-  <label>
-    Datum:
-    <input type="date" [(ngModel)]="date" name="date" required />
-  </label>
+  <section class="card sleep-card">
+    <form (ngSubmit)="addEntry()" #sleepForm="ngForm" class="sleep-form">
+      <label class="field">
+        <span class="field-label">Datum</span>
+        <input
+          class="field-input"
+          type="date"
+          [(ngModel)]="date"
+          name="date"
+          required />
+      </label>
 
-  <label>
-    Broj sati sna:
-    <input type="number" [(ngModel)]="hours" name="hours" min="0" step="0.5" required />
-  </label>
+      <label class="field">
+        <span class="field-label">Broj sati sna</span>
+        <input
+          class="field-input"
+          type="number"
+          [(ngModel)]="hours"
+          name="hours"
+          min="0"
+          step="0.5"
+          required />
+      </label>
 
-  <label>
-    Ocjena (1–5):
-    <select [(ngModel)]="rating" name="rating">
-      <option [ngValue]="1">1</option>
-      <option [ngValue]="2">2</option>
-      <option [ngValue]="3">3</option>
-      <option [ngValue]="4">4</option>
-      <option [ngValue]="5">5</option>
-    </select>
-  </label>
+      <label class="field">
+        <span class="field-label">Ocjena (1–5)</span>
+        <select
+          class="field-input"
+          [(ngModel)]="rating"
+          name="rating">
+          <option [ngValue]="1">1</option>
+          <option [ngValue]="2">2</option>
+          <option [ngValue]="3">3</option>
+          <option [ngValue]="4">4</option>
+          <option [ngValue]="5">5</option>
+        </select>
+      </label>
 
-  <label>
-    Bilješka:
-    <textarea [(ngModel)]="note" name="note" rows="2" placeholder="Opcionalno: snovi, kako si se osjećao/la..."></textarea>
-  </label>
+      <label class="field">
+        <span class="field-label">Bilješka</span>
+        <textarea
+          class="field-input"
+          [(ngModel)]="note"
+          name="note"
+          rows="2"
+          placeholder="Opcionalno: snovi, kako si se osjećao/la...">
+        </textarea>
+      </label>
 
-  <button type="submit">Dodaj zapis</button>
-</form>
+      <button type="submit" class="btn-primary">
+        Dodaj zapis
+      </button>
+    </form>
+  </section>
 
-<hr />
+  <section class="card sleep-card">
+    <h3 class="section-title">Historija spavanja</h3>
 
-<h3>Historija spavanja</h3>
-<table class="sleep-table" *ngIf="entries.length; else noEntries">
-  <thead>
-    <tr>
-      <th>Datum</th>
-      <th>Sati</th>
-      <th>Ocjena</th>
-      <th>Interpretacija</th>
-      <th>Bilješka</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let e of entries">
-      <td>{{ e.date }}</td>
-      <td>{{ e.hours }}</td>
-      <td>{{ e.rating }}</td>
-      <td>{{ getMoodLabel(e.rating) }}</td>
-      <td>{{ e.note }}</td>
-      <td><button type="button" (click)="deleteEntry(e.id)">X</button></td>
-    </tr>
-  </tbody>
-</table>
+    <table class="sleep-table" *ngIf="entries.length; else noEntries">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Sati</th>
+          <th>Ocjena</th>
+          <th>Interpretacija</th>
+          <th>Bilješka</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let entry of entries">
+          <td>{{ entry.date }}</td>
+          <td>{{ entry.hours }}</td>
+          <td>{{ entry.rating }}</td>
+          <td>{{ getMoodLabel(entry.rating) }}</td>
+          <td>{{ entry.note }}</td>
+          <td>
+            <button
+              type="button"
+              class="icon-btn"
+              (click)="deleteEntry(entry.id)">
+              Obriši
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-<ng-template #noEntries>
-  <p>Još nema zapisa. Dodaj prvi zapis o spavanju.</p>
-</ng-template>
+    <ng-template #noEntries>
+      <p>Još nema zapisa. Dodaj prvi zapis o spavanju.</p>
+    </ng-template>
+  </section>
+</div>

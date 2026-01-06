@@ -1,23 +1,22 @@
-<header>
-	<a href="index.html">
-		<img src="slike/logo-ipi.png" alt="Kursevi IPI">
-	</a>
-</header>
+<main class="page schedule-page app-main">
+  <article class="card schedule-card">
+    <h1 class="page-title">Raspored kurseva</h1>
 
-<article>
-	<h2>Raspored kurseva</h2>
-
-	<label for="godina"><strong>Odaberite godinu studija:</strong></label>
-	<select id="godina">
-		<option value="">-- izaberite --</option>
-		<option value="1">1. godina</option>
-		<option value="2">2. godina</option>
-		<option value="3">3. godina</option>
-		<option value="4">4. godina</option>
-	</select>
+    <div class="schedule-filter">
+      <label for="godina" class="field-label">
+        Odaberite godinu studija:
+      </label>
+      <select id="godina" class="field-input" name="godina" [(ngModel)]="selectedYear">
+        <option value="">-- izaberite --</option>
+        <option value="1">1. godina</option>
+        <option value="2">2. godina</option>
+        <option value="3">3. godina</option>
+        <option value="4">4. godina</option>
+      </select>
+    </div>
 
 	<div id="tabele">
-		<table id="g1" style="display:none;">
+		<table id="g1" *ngIf="isYear('1')">
 			<tr>
 				<th>Dan</th><th>Predmet</th><th>Stud. program</th><th>Nastavnik</th><th>Vrijeme</th><th>Učionica</th>
 			</tr>
@@ -87,7 +86,7 @@
 			</tr>
 		</table>
 
-		<table id="g2" style="display:none;">
+		<table id="g2" *ngIf="isYear('2')">
 			<tr>
 				<th>Dan</th><th>Predmet</th><th>Stud. program</th><th>Nastavnik</th><th>Vrijeme</th><th>Učionica</th>
 			</tr>
@@ -181,7 +180,7 @@
 			</tr>
 		</table>
 
-<table id="g3" style="display:none;">
+<table id="g3" *ngIf="isYear('3')">
 	<tr>
 		<th>Dan</th><th>Predmet</th><th>Stud. program</th><th>Nastavnik</th><th>Vrijeme</th><th>Učionica</th>
 	</tr>
@@ -332,7 +331,7 @@
 
 </table>
 
-<table id="g4" style="display:none;">
+<table id="g4" *ngIf="isYear('4')">
 	<tr>
 		<th>Dan</th><th>Predmet</th><th>Studijski program</th><th>Nastavnik</th><th>Vrijeme</th><th>Učionica</th>
 	</tr>
@@ -386,4 +385,4 @@
 	</div>
 </article>
 
-<footer>&copy; Internacionalna poslovno-informaciona akademija Tuzla</footer>
+<footer class="app-footer"> &copy; Internacionalna poslovno-informaciona akademija Tuzla</footer>

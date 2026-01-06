@@ -1,32 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface PlannerTask {
-  id: number;
-  text: string;
-  done: boolean;
-}
-
-interface PlannerDay {
-  date: string;                 // yyyy-mm-dd
-  weather: string;              // simple string/emoji
-  todos: PlannerTask[];         // to do list
-  goals: string[];              // max 3–5 goals
-  schedule: Record<string,string>; // "06:00" -> text
-  notes: string;
-  tomorrow: string;
-  nextTaskId: number;
-}
+import {
+  PlannerTask,
+  PlannerDay,
+  PlannerService,
+} from '../../../services/planner';
 
 @Component({
   selector: 'app-daily-planner',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './daily-planner.html',
-  styleUrls: ['./daily-planner.css']
+  styleUrls: ['./daily-planner.css'],
 })
-export class DailyPlannerComponent {
+export class DailyPlannerComponent implements OnInit {
+  private plannerService = inject(PlannerService);
 
   hours = [
     '06:00','07:00','08:00','09:00','10:00','11:00',
@@ -37,25 +26,22 @@ export class DailyPlannerComponent {
   selectedDate = this.today();
   model: PlannerDay = this.emptyDay(this.selectedDate);
 
-  // helper za novi todo
   newTodoText = '';
   newGoalText = '';
 
-  constructor() {
-    this.loadDay();
+  loading = false;
+
+  async ngOnInit(): Promise<void> {
+    await this.loadDay();
   }
 
   private today(): string {
     return new Date().toISOString().slice(0, 10);
   }
 
-  private storageKey(date: string): string {
-    return 'planner-' + date;
-  }
-
   private emptyDay(date: string): PlannerDay {
-    const schedule: Record<string,string> = {};
-    this.hours.forEach(h => schedule[h] = '');
+    const schedule: Record<string, string> = {};
+    this.hours.forEach((h) => (schedule[h] = ''));
     return {
       date,
       weather: '',
@@ -64,94 +50,97 @@ export class DailyPlannerComponent {
       schedule,
       notes: '',
       tomorrow: '',
-      nextTaskId: 1
+      nextTaskId: 1,
     };
   }
 
-  onDateChange(): void {
-    this.loadDay();
+  async onDateChange(): Promise<void> {
+    await this.loadDay();
   }
 
-  private loadDay(): void {
-    const key = this.storageKey(this.selectedDate);
-    const raw = localStorage.getItem(key);
-    if (!raw) {
-      this.model = this.emptyDay(this.selectedDate);
-      return;
-    }
+  private async loadDay(): Promise<void> {
+    this.loading = true;
     try {
-      this.model = JSON.parse(raw) as PlannerDay;
+      const existing = await this.plannerService.loadDay(this.selectedDate);
+      this.model = existing ?? this.emptyDay(this.selectedDate);
       // osiguraj da postoji schedule za sve sate
-      this.hours.forEach(h => {
+      this.hours.forEach((h) => {
         if (!this.model.schedule[h]) this.model.schedule[h] = '';
       });
-    } catch {
+    } catch (e) {
+      console.error(e);
       this.model = this.emptyDay(this.selectedDate);
+    } finally {
+      this.loading = false;
     }
   }
 
-  private saveDay(): void {
-    const key = this.storageKey(this.selectedDate);
-    localStorage.setItem(key, JSON.stringify(this.model));
+  private async saveDay(): Promise<void> {
+    try {
+      await this.plannerService.saveDay(this.model);
+    } catch (e) {
+      console.error(e);
+      alert('Greška pri spremanju plana dana.');
+    }
   }
 
-  // --- weather / notes / tomorrow ---
+  // --- weather / notes / tomorrow / schedule ---
 
-  onWeatherChange(): void {
-    this.saveDay();
+  async onWeatherChange(): Promise<void> {
+    await this.saveDay();
   }
 
-  onNotesChange(): void {
-    this.saveDay();
+  async onNotesChange(): Promise<void> {
+    await this.saveDay();
   }
 
-  onTomorrowChange(): void {
-    this.saveDay();
+  async onTomorrowChange(): Promise<void> {
+    await this.saveDay();
   }
 
-  onScheduleChange(): void {
-    this.saveDay();
+  async onScheduleChange(): Promise<void> {
+    await this.saveDay();
   }
 
   // --- TO DO LIST ---
 
-  addTodo(): void {
+  async addTodo(): Promise<void> {
     const text = this.newTodoText.trim();
     if (!text) return;
 
     this.model.todos.push({
       id: this.model.nextTaskId++,
       text,
-      done: false
+      done: false,
     });
     this.newTodoText = '';
-    this.saveDay();
+    await this.saveDay();
   }
 
-  toggleTodo(id: number): void {
-    const t = this.model.todos.find(x => x.id === id);
+  async toggleTodo(id: number): Promise<void> {
+    const t = this.model.todos.find((x) => x.id === id);
     if (!t) return;
     t.done = !t.done;
-    this.saveDay();
+    await this.saveDay();
   }
 
-  deleteTodo(id: number): void {
-    this.model.todos = this.model.todos.filter(t => t.id !== id);
-    this.saveDay();
+  async deleteTodo(id: number): Promise<void> {
+    this.model.todos = this.model.todos.filter((t) => t.id !== id);
+    await this.saveDay();
   }
 
   // --- GOALS ---
 
-  addGoal(): void {
+  async addGoal(): Promise<void> {
     const text = this.newGoalText.trim();
     if (!text) return;
     this.model.goals.push(text);
     this.newGoalText = '';
-    this.saveDay();
+    await this.saveDay();
   }
 
-  deleteGoal(index: number): void {
+  async deleteGoal(index: number): Promise<void> {
     this.model.goals.splice(index, 1);
-    this.saveDay();
+    await this.saveDay();
   }
 }

@@ -1,24 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
-interface WaterRecords {
-  [date: string]: number; // yyyy-mm-dd -> number of glasses
-}
+import { WaterService, WaterEntry } from '../../../services/water';
 
 @Component({
   selector: 'app-water-tracker',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './water-tracker.html',
-  styleUrls: ['./water-tracker.css']
+  styleUrls: ['./water-tracker.css'],
 })
-export class WaterTrackerComponent {
+export class WaterTrackerComponent implements OnInit {
+  private waterService = inject(WaterService);
 
-  readonly glassesPerDayTarget = 10;   // 10 x 0.2L = 2L
-  readonly maxGlassesPerDay = 20;      // do 4L
+  readonly glassesPerDayTarget = 10;  // 10 x 0.2L = 2L
+  readonly maxGlassesPerDay = 20;     // do 4L
 
-  records: WaterRecords = {};
+  // u memoriji i dalje držimo mapu date -> glasses, ali je punimo iz Firestore
+  records: { [date: string]: number } = {};
 
   today = this.toDateString(new Date());
   selectedDate = this.today;
@@ -26,10 +25,10 @@ export class WaterTrackerComponent {
   selectedYear = new Date().getFullYear();
   selectedMonth = new Date().getMonth(); // 0–11
 
-  private isBrowser = typeof window !== 'undefined' && typeof window.localStorage !== 'undefined';
+  loading = false;
 
-  constructor() {
-    if (this.isBrowser) this.loadFromStorage();
+  async ngOnInit() {
+    await this.loadFromFirestore();
   }
 
   toDateString(d: Date): string {
@@ -45,11 +44,22 @@ export class WaterTrackerComponent {
   }
 
   /** klik na čašu 1..20 */
-  setGlasses(count: number): void {
+  async setGlasses(count: number): Promise<void> {
     if (count < 0) count = 0;
     if (count > this.maxGlassesPerDay) count = this.maxGlassesPerDay;
-    this.records[this.selectedDate] = count;
-    this.saveToStorage();
+
+    this.loading = true;
+    try {
+      // spremi u lokalnu mapu
+      this.records[this.selectedDate] = count;
+      // pošalji u Firestore
+      await this.waterService.addOrUpdateEntry(this.selectedDate, count);
+    } catch (e) {
+      console.error(e);
+      alert('Greška pri spremanju unosa vode.');
+    } finally {
+      this.loading = false;
+    }
   }
 
   /** je li čaša popunjena (za prikaz boje) */
@@ -93,21 +103,23 @@ export class WaterTrackerComponent {
     this.selectedDate = iso;
   }
 
-  // --- storage ---
+  // --- učitavanje iz Firestore ---
 
-  private saveToStorage(): void {
-    if (!this.isBrowser) return;
-    localStorage.setItem('waterRecords', JSON.stringify(this.records));
-  }
-
-  private loadFromStorage(): void {
-    if (!this.isBrowser) return;
-    const raw = localStorage.getItem('waterRecords');
-    if (!raw) return;
+  private async loadFromFirestore(): Promise<void> {
+    this.loading = true;
     try {
-      this.records = JSON.parse(raw) as WaterRecords;
-    } catch {
+      const entries = await this.waterService.getEntries();
+      const map: { [date: string]: number } = {};
+      for (const e of entries) {
+        // ako isti dan ima više dokumenata, uzmi zadnji (ili najveći broj čaša)
+        map[e.date] = Math.max(map[e.date] ?? 0, e.glasses);
+      }
+      this.records = map;
+    } catch (e) {
+      console.error(e);
       this.records = {};
+    } finally {
+      this.loading = false;
     }
   }
 }

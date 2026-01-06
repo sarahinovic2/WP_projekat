@@ -1,0 +1,147 @@
+.page {
+  padding: 1.5rem 0;
+}
+
+.page-header {
+  margin-bottom: 1.5rem;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.page-subtitle {
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Gornji red: datum / mjesec / vrijeme */
+.planner-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+}
+
+.planner-control {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+}
+
+.planner-label {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.planner-month {
+  font-weight: 500;
+}
+
+/* Dvije kolone */
+.planner-body {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.planner-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.planner-card {
+  /* card već daje background/border/shadow iz globalnog CSS-a */
+}
+
+.planner-section-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+}
+
+/* Inputs / lists */
+.planner-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.planner-input,
+.planner-textarea,
+.planner-header input,
+.planner-header select {
+  width: 100%;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font: inherit;
+}
+
+.planner-textarea {
+  resize: vertical;
+}
+
+.planner-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.planner-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.planner-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.planner-checkbox .done {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+.planner-icon-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+.planner-icon-btn:hover {
+  opacity: 1;
+}
+
+/* Schedule grid */
+.schedule-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.schedule-row {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.time-label {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}

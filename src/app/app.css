@@ -1,0 +1,196 @@
+:root {
+  /* single source of truth for header sizing across all themes */
+  --app-header-height: 96px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem; /* tighter header */
+  gap: 0.5rem;
+  min-height: var(--app-header-height);
+  /* use theme tokens so header matches selected theme */
+  background: linear-gradient(180deg, var(--color-surface), color-mix(in srgb, var(--color-surface) 90%, rgba(0,0,0,0.02)) );
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-soft, 0 6px 18px rgba(0,0,0,0.06));
+  font-family: var(--font-main, inherit);
+  font-size: 0.95rem; /* slightly smaller header text */
+}
+
+header img, .logo-link img, header .logo {
+  /* icon-sized logo: keep layout consistent but small */
+  height: 100px;
+  width: auto;
+  display: inline-block;
+}
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+nav a {
+  color: var(--color-text);
+  text-decoration: none;
+  padding: 0.4rem 0.65rem; /* reduced padding */
+  border-radius: 8px;
+  transition: background .18s ease, color .12s ease, transform .08s ease, box-shadow .12s ease;
+  font-weight: 600;
+  font-size: 0.9rem; /* smaller menu font */
+  letter-spacing: 0.2px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* active and hover use the primary color to be theme-consistent */
+nav a.active, nav a:hover {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark, var(--color-primary)));
+  color: var(--color-on-primary);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+}
+
+/* keep Contact emphasized but theme-aware */
+nav a[routerLink="/contact"] {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark, var(--color-primary)));
+  color: var(--color-on-primary);
+  border: none;
+}
+
+footer {
+  background: var(--footer-bg);
+  padding: 1rem;
+  text-align: center;
+}
+
+.theme-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.theme-selector .current-theme {
+  font-size: 0.85rem;
+  color: var(--color-text);
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.02);
+}
+
+.theme-selector select {
+  padding: 0.25rem 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  display: none; /* theme selection removed from header - kept for accessibility */
+}
+
+.mode-toggle {
+  display:flex;
+  align-items:center;
+  gap:0.6rem;
+  font-size:0.9rem;
+}
+
+.mode-toggle input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.mode-toggle .switch {
+  width: 48px;
+  height: 26px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 999px;
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  transition: background .15s ease;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+}
+
+.mode-toggle .switch::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  background: var(--color-surface);
+  border-radius: 50%;
+  position: absolute;
+  left: 4px;
+  top: 3px;
+  transition: transform .18s ease;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.18);
+}
+
+.mode-toggle input[type="checkbox"]:checked + .switch {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-hover));
+}
+
+.mode-toggle input[type="checkbox"]:checked + .switch::after {
+  transform: translateX(22px);
+}
+
+.mode-toggle .mode-label {
+  font-weight: 600;
+  margin-left: 6px;
+}
+
+/* Logout button styles */
+.btn-logout {
+  appearance: none;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text);
+  padding: 0.35rem 0.65rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .12s ease, color .12s ease, transform .08s ease, box-shadow .12s ease;
+}
+
+.btn-logout:hover {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-dark, var(--color-primary)));
+  color: var(--color-on-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+
+.btn-logout:focus {
+  outline: 3px solid color-mix(in srgb, var(--color-primary) 16%, rgba(255,255,255,0.0));
+  outline-offset: 2px;
+}
+
+/* Make it compact on small screens */
+@media (max-width: 640px) {
+  .btn-logout {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Retro-specific logout button improvements */
+body.theme-retro .btn-logout {
+  border: 2px solid var(--color-border);
+  background: transparent;
+  color: var(--text);
+  padding: 0.4rem 0.8rem;
+  border-radius: 12px;
+  font-family: var(--font-main, inherit);
+  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+}
+body.theme-retro .btn-logout:hover {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-primary-hover));
+  color: var(--color-on-primary);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(255,78,205,0.12);
+}

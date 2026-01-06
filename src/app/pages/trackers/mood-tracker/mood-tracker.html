@@ -1,60 +1,92 @@
-<h2>Mood Tracker</h2>
-<p>Odaberi raspoloženje u boji i emoji-ju, dodaj kratku bilješku, i prati kako ti ide kroz dane.</p>
+<div class="page">
+  <header class="page-header">
+    <h1 class="page-title">Mood Tracker</h1>
+    <p class="page-subtitle">
+      Odaberi raspoloženje u boji i emoji-ju, dodaj kratku bilješku, i prati kako ti ide kroz dane.
+    </p>
+  </header>
 
-<form (ngSubmit)="addEntry()" #moodForm="ngForm" class="mood-form">
-  <label>
-    Datum:
-    <input type="date" [(ngModel)]="date" name="date" required />
-  </label>
+  <section class="card mood-card">
+    <form (ngSubmit)="addEntry()" #moodForm="ngForm" class="mood-form">
+      <label class="field">
+        <span class="field-label">Datum</span>
+        <input
+          class="field-input"
+          type="date"
+          [(ngModel)]="date"
+          name="date"
+          required />
+      </label>
 
-  <div class="mood-buttons">
-    <button
-      type="button"
-      *ngFor="let m of moods"
-      (click)="selectMood(m.value)"
-      [class.selected]="selectedMood === m.value"
-      [ngClass]="m.colorClass"
-    >
-      <span class="emoji">{{ m.label }}</span>
-      <span class="text">{{ m.text }}</span>
-    </button>
-  </div>
+      <div class="field">
+        <span class="field-label">Raspoloženje</span>
+        <div class="mood-buttons">
+          <button
+            type="button"
+            *ngFor="let m of moods"
+            (click)="selectMood(m.value)"
+            [class.selected]="selectedMood === m.value"
+            [ngClass]="m.colorClass"
+            class="mood-pill">
+            <span class="emoji">{{ m.label }}</span>
+            <span class="text">{{ m.text }}</span>
+          </button>
+        </div>
+      </div>
 
-  <label>
-    Bilješka:
-    <textarea
-      [(ngModel)]="note"
-      name="note"
-      rows="2"
-      placeholder="Opcionalno: šta je uticalo na raspoloženje?"
-    ></textarea>
-  </label>
+      <label class="field">
+        <span class="field-label">Bilješka</span>
+        <textarea
+          class="field-input"
+          [(ngModel)]="note"
+          name="note"
+          rows="2"
+          placeholder="Opcionalno: šta je uticalo na raspoloženje?">
+        </textarea>
+      </label>
 
-  <button type="submit">Dodaj zapis</button>
-</form>
+      <button type="submit" class="btn-primary">
+        Dodaj zapis
+      </button>
+    </form>
+  </section>
 
-<hr />
+  <section class="card mood-card">
+    <h3 class="section-title">Historija raspoloženja</h3>
 
-<h3>Historija raspoloženja</h3>
-<table class="mood-table" *ngIf="entries.length; else noEntries">
-  <thead>
-    <tr>
-      <th>Datum</th>
-      <th>Raspoloženje</th>
-      <th>Bilješka</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let e of entries" [ngClass]="getMoodMeta(e.mood).colorClass">
-      <td>{{ e.date }}</td>
-      <td>{{ getMoodMeta(e.mood).label }} {{ getMoodMeta(e.mood).text }}</td>
-      <td>{{ e.note }}</td>
-      <td><button type="button" (click)="deleteEntry(e.id)">X</button></td>
-    </tr>
-  </tbody>
-</table>
+    <table class="mood-table" *ngIf="entries.length; else noEntries">
+      <thead>
+        <tr>
+          <th>Datum</th>
+          <th>Raspoloženje</th>
+          <th>Bilješka</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let e of entries"
+          [ngClass]="getMoodMeta(e.mood).colorClass">
+          <td>{{ e.date }}</td>
+          <td>
+            {{ getMoodMeta(e.mood).label }}
+            {{ getMoodMeta(e.mood).text }}
+          </td>
+          <td>{{ e.note }}</td>
+          <td>
+            <button
+              type="button"
+              class="icon-btn"
+              (click)="deleteEntry(e.id)">
+              ✕
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
-<ng-template #noEntries>
-  <p>Još nema zapisa. Odaberi raspoloženje za današnji dan.</p>
-</ng-template>
+    <ng-template #noEntries>
+      <p>Još nema zapisa. Odaberi raspoloženje za današnji dan.</p>
+    </ng-template>
+  </section>
+</div>

@@ -1,0 +1,647 @@
+/* ==========================
+   RETRO GIRLY ARCADE THEME
+========================== */
+
+/* FONT IMPORT */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;700&display=swap');
+
+/* --------------------------
+   LIGHT MODE
+--------------------------- */
+html[data-theme="retro"][data-mode="light"] {
+  --color-bg: linear-gradient(180deg, #ffd1e6 0%, #cfe0ff 100%);
+  --color-surface: #ffffff;
+  --color-border: #5f6caf;
+  --color-text: #2c2c54;
+  --color-primary: #ff7ac8;
+  --color-primary-hover: #ff4ea0;
+  --color-on-primary: #ffffff;
+  --color-accent: #ffe66d;
+  --shadow-card: 8px 8px 0 #a4b0ff;
+  --font-main: 'Press Start 2P', monospace;
+  --grid-overlay:
+    linear-gradient(0deg, rgba(255,255,255,0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.15) 1px, transparent 1px);
+  /* Backwards-compatible aliases for existing layout */
+  --bg: var(--color-bg);
+  --text: var(--color-text);
+  --bg-alt: var(--color-surface);
+  --footer-bg: var(--color-surface);
+  --shadow-soft: var(--shadow-card);
+}
+
+/* --------------------------
+   DARK MODE
+--------------------------- */
+html[data-theme="retro"][data-mode="dark"] {
+  --color-bg: linear-gradient(180deg, #2b1b2f 0%, #1c1123 100%);
+  --color-surface: #1f1625;
+  --color-border: #a54fbf;
+  --color-text: #f3e7f3;
+  --color-primary: #ff7ac8;
+  --color-primary-hover: #ff4ea0;
+  --color-on-primary: #1b1420;
+  --color-accent: #ffe66d;
+  --shadow-card: 8px 8px 0 #7b5f90;
+  --font-main: 'Press Start 2P', monospace;
+  --grid-overlay:
+    linear-gradient(0deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+  /* Backwards-compatible aliases for existing layout */
+  --bg: var(--color-bg);
+  --text: var(--color-text);
+  --bg-alt: var(--color-surface);
+  --footer-bg: var(--color-surface);
+  --shadow-soft: var(--shadow-card);
+}
+
+/* --------------------------
+   BODY & BACKGROUND
+--------------------------- */
+body.theme-retro {
+  font-family: var(--font-main);
+  color: var(--color-text);
+  background: var(--color-bg);
+  background-size: cover, 40px 40px, 40px 40px;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* GRID OVERLAY */
+body.theme-retro::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: var(--grid-overlay);
+  pointer-events: none;
+}
+
+/* --------------------------
+   CARD
+--------------------------- */
+.auth-card {
+  width: 420px;
+  background: var(--color-surface);
+  border: 3px solid var(--color-border);
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow-card);
+  position: relative;
+}
+
+/* CARD TITLE BAR */
+.auth-card::before {
+  content: "REGISTER.EXE";
+  position: absolute;
+  top: -32px;
+  left: 0;
+  width: 100%;
+  background: var(--color-border);
+  color: var(--color-on-primary);
+  padding: 6px 10px;
+  font-size: 0.55rem;
+}
+
+/* CRT SCANLINE EFFECT */
+.auth-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(0,0,0,0.04),
+      rgba(0,0,0,0.04) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+  pointer-events: none;
+}
+
+/* --------------------------
+   FORM ELEMENTS
+--------------------------- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.auth-form input,
+.auth-form select {
+  font-family: inherit;
+  padding: 0.6rem;
+  border: 2px solid var(--color-border);
+  background: #f8f9ff;
+  font-size: 0.65rem;
+  color: var(--color-text);
+}
+
+/* LABEL */
+.theme-label {
+  font-size: 0.55rem;
+}
+
+/* --------------------------
+   BUTTONS
+--------------------------- */
+.primary-btn {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  background: var(--color-primary);
+  border: 3px solid var(--color-text);
+  box-shadow: 4px 4px 0 var(--color-text);
+  font-family: inherit;
+  font-size: 0.65rem;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.primary-btn:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--color-text);
+  background: var(--color-primary-hover);
+}
+
+.link-btn {
+  background: var(--color-accent);
+  border: 2px solid var(--color-text);
+  font-family: inherit;
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+
+.link-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 2px 2px 0 var(--color-text);
+}
+
+/* --------------------------
+   FOOTER / TEXT
+--------------------------- */
+.auth-footer {
+  margin-top: 1.2rem;
+  text-align: center;
+  font-size: 0.55rem;
+}
+
+/* ==========================
+   CYBERPUNK THEME
+========================== */
+
+/* FONT IMPORT */
+
+/* --------------------------
+   LIGHT MODE (dark background)
+   Hot-pink accents retained while background is dark
+--------------------------- */
+html[data-theme="cyberpunk"][data-mode="light"] {
+  /* dark background — keeps cyberpunk accents hot-pink */
+  --color-bg: linear-gradient(180deg, #07121a 0%, #001018 100%);
+  --color-surface: #0b1a21; /* slightly lighter surface for cards */
+  --color-border: #ff2fa6; /* hot pink */
+  --color-text: #cfeef8; /* pale cyan for readability on dark bg */
+  --color-primary: #ff2fa6; /* hot pink accents remain */
+  --color-primary-hover: #ff0072;
+  --color-on-primary: #081018; /* dark text on hot-pink */
+  --color-accent: #00e6ff; /* cyan accent kept */
+  --shadow-card: 0 6px 24px rgba(0,0,0,0.5);
+  --font-main: 'Orbitron', sans-serif;
+  --grid-overlay:
+    radial-gradient(ellipse at center, rgba(255,47,166,0.02), transparent 30%),
+    linear-gradient(0deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+
+  /* UI token aliases (suitable for dark background) */
+  --btn-bg: transparent;
+  --btn-text: var(--color-text);
+  --btn-shadow: 0 6px 18px rgba(255,47,166,0.06);
+  --btn-shadow-hover: 0 8px 28px rgba(255,47,166,0.08);
+
+  --card-bg: var(--color-surface);
+  --card-text: var(--color-text);
+  --card-border: rgba(255,47,166,0.10);
+  --card-shadow: var(--shadow-card);
+
+  --input-border: rgba(255,255,255,0.03);
+  --input-bg: rgba(255,255,255,0.01);
+  --input-text: var(--color-text);
+
+  --accent: var(--color-accent);
+  --accent-2: rgba(255,47,166,0.10);
+
+  /* Backwards-compatible aliases for existing layout */
+  --bg: var(--color-bg);
+  --text: var(--color-text);
+  --bg-alt: var(--color-surface);
+  --footer-bg: var(--color-surface);
+  --shadow-soft: var(--shadow-card);
+}
+
+/* --------------------------
+   DARK MODE
+   Blue / cyan neon details on dark background
+--------------------------- */
+html[data-theme="cyberpunk"][data-mode="dark"] {
+  --color-bg: linear-gradient(180deg, #07121a 0%, #00121a 100%);
+  --color-surface: #071a21; /* dark card surface */
+  --color-border: #00e6ff; /* neon cyan */
+  --color-text: #cfeef8; /* pale cyan text */
+  --color-primary: #00e6ff; /* neon cyan */
+  --color-primary-hover: #00b3cc;
+  --color-on-primary: #001219;
+  --color-accent: #8a5cff; /* subtle purple accent for variety */
+  --shadow-card: 0 10px 40px rgba(0,230,255,0.06);
+  --font-main: 'Orbitron', sans-serif;
+  --grid-overlay:
+    radial-gradient(ellipse at center, rgba(0,230,255,0.035), transparent 30%),
+    linear-gradient(0deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+
+  /* UI token aliases */
+  --btn-bg: var(--color-primary);
+  --btn-text: var(--color-on-primary);
+  --btn-shadow: 0 6px 34px rgba(0,230,255,0.06);
+  --btn-shadow-hover: 0 8px 48px rgba(0,230,255,0.08);
+
+  --card-bg: var(--color-surface);
+  --card-text: var(--color-text);
+  --card-border: rgba(0,230,255,0.12);
+  --card-shadow: var(--shadow-card);
+
+  --input-border: rgba(255,255,255,0.03);
+  --input-bg: rgba(0,0,0,0.12);
+  --input-text: var(--color-text);
+
+  --accent: var(--color-accent);
+  --accent-2: rgba(138,92,255,0.08);
+
+  /* Backwards-compatible aliases for existing layout */
+  --bg: var(--color-bg);
+  --text: var(--color-text);
+  --bg-alt: var(--color-surface);
+  --footer-bg: var(--color-surface);
+  --shadow-soft: var(--shadow-card);
+}
+
+/* --------------------------
+   BODY & BACKGROUND
+--------------------------- */
+body.theme-cyberpunk {
+  font-family: var(--font-main);
+  color: var(--color-text);
+  background: var(--color-bg);
+  background-size: cover, 40px 40px, 40px 40px;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* Subtle grid / glow overlay */
+body.theme-cyberpunk::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: var(--grid-overlay);
+  pointer-events: none;
+}
+
+/* Make auth cards glow with neon border */
+.auth-card {
+  width: 420px;
+  background: var(--color-surface);
+  border: 2px solid var(--color-border);
+  padding: 2rem 1.5rem;
+  box-shadow: 0 6px 26px rgba(0,0,0,0.45), 0 0 18px rgba(0,230,255,0.04);
+  position: relative;
+}
+
+.auth-card::before {
+  content: "CYBERPUNK"
+  ;
+  position: absolute;
+  top: -28px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  background: transparent;
+  color: var(--color-border);
+  padding: 4px 0;
+  font-size: 0.6rem;
+}
+
+/* Form fields tuned to theme */
+.auth-form input,
+.auth-form select {
+  font-family: inherit;
+  padding: 0.6rem;
+  border: 2px solid rgba(255,255,255,0.03);
+  background: rgba(0,0,0,0.04);
+  font-size: 0.65rem;
+  color: var(--color-text);
+}
+
+/* Primary button neon style */
+.primary-btn {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  background: transparent;
+  border: 2px solid var(--color-border);
+  color: var(--color-text);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.45), 0 0 18px var(--color-border);
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 34px var(--color-border);
+}
+
+.theme-label { font-size: 0.55rem; }
+
+/* Small accent links */
+.link-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.04);
+  color: var(--color-accent);
+}
+
+/* END CYBERPUNK THEME */
+
+/* ==========================
+   CLASSICAL THEME
+   Light: muted white background with blue details
+   Dark: black background with same blue accents
+========================== */
+
+/* LIGHT MODE (muted white + blue details) */
+html[data-theme="classical"][data-mode="light"] {
+  --color-bg: linear-gradient(180deg, #fbfcfe 0%, #f6f7fa 100%); /* muted white */
+  --color-surface: #f2f4f7; /* slightly muted white surface */
+  --color-border: #2b7cff; /* calm blue */
+  --color-text: #0b2130; /* dark slate for readability */
+  --color-primary: #2b7cff; /* blue accents */
+  --color-primary-hover: #1e66e6;
+  --color-on-primary: #ffffff;
+  --color-accent: #9ad0ff; /* lighter blue accent */
+  --shadow-card: 0 6px 20px rgba(43,124,255,0.06);
+  --font-main: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --grid-overlay:
+    linear-gradient(0deg, rgba(0,0,0,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px);
+
+  /* UI token aliases */
+  --btn-bg: var(--color-primary);
+  --btn-text: var(--color-on-primary);
+  --btn-shadow: 0 6px 18px rgba(43,124,255,0.06);
+  --btn-shadow-hover: 0 8px 28px rgba(43,124,255,0.08);
+
+  --card-bg: var(--color-surface);
+  --card-text: var(--color-text);
+  --card-border: rgba(43,124,255,0.10);
+  --card-shadow: var(--shadow-card);
+
+  --input-border: rgba(11,33,48,0.06);
+  --input-bg: #ffffff;
+  --input-text: var(--color-text);
+
+  --accent: var(--color-accent);
+  --accent-2: rgba(43,124,255,0.08);
+
+  --bg: var(--color-bg);
+  --text: var(--color-text);
+  --bg-alt: var(--color-surface);
+  --footer-bg: var(--color-surface);
+  --shadow-soft: var(--shadow-card);
+}
+
+/* DARK MODE (black background, keep blue details) */
+html[data-theme="classical"][data-mode="dark"] {
+  --color-bg: linear-gradient(180deg, #000000 0%, #060606 100%); /* black background */
+  --color-surface: #0a0a0a; /* dark surface */
+  --color-border: #2b7cff; /* same blue accents */
+  --color-text: #dfeefc; /* muted pale text */
+  --color-primary: #2b7cff;
+  --color-primary-hover: #1e66e6;
+  --color-on-primary: #001028;
+  --color-accent: #9ad0ff;
+  --shadow-card: 0 8px 30px rgba(43,124,255,0.04);
+  --font-main: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --grid-overlay:
+    linear-gradient(0deg, rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+
+  /* UI token aliases */
+  --btn-bg: transparent;
+  --btn-text: var(--color-text);
+  --btn-shadow: 0 6px 24px rgba(43,124,255,0.04);
+  --btn-shadow-hover: 0 8px 36px rgba(43,124,255,0.06);
+
+  --card-bg: var(--color-surface);
+  --card-text: var(--color-text);
+  --card-border: rgba(43,124,255,0.10);
+  --card-shadow: var(--shadow-card);
+
+  --input-border: rgba(255,255,255,0.03);
+  --input-bg: rgba(255,255,255,0.01);
+  --input-text: var(--color-text);
+
+  --accent: var(--color-accent);
+  --accent-2: rgba(43,124,255,0.06);
+
+  --bg: var(--color-bg);
+  --text: var(--color-text);
+  --bg-alt: var(--color-surface);
+  --footer-bg: var(--color-surface);
+  --shadow-soft: var(--shadow-card);
+}
+
+/* BODY & BACKGROUND */
+body.theme-classical {
+  font-family: var(--font-main);
+  color: var(--color-text);
+  background: var(--color-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* END CLASSICAL THEME */
+
+/* ==========================
+   WHIMSICAL FOREST THEME
+   Light: soft mint / card with rounded corners
+   Dark: moody swamp — you can set a background image via --bg-image
+========================== */
+
+/* FONT IMPORT */
+
+/* --------------------------
+   LIGHT MODE
+--------------------------- */
+html[data-theme="whimsical-forest"][data-mode="light"] {
+  --color-bg: linear-gradient(180deg, #eaf9f3 0%, #f8fff9 100%);
+  --color-surface: #fbfffd; /* muted white */
+  --color-border: #8bcfae; /* muted green */
+  --color-text: #114033; /* deep forest green */
+  --color-primary: #7fbf9e; /* button gradient */
+  --color-primary-hover: #6eb68f;
+  --color-on-primary: #ffffff;
+  --color-accent: #dff5ea;
+  --shadow-card: 0 18px 40px rgba(17,64,51,0.05);
+  --font-main: 'Merriweather', serif;
+  --grid-overlay:
+    linear-gradient(0deg, rgba(0,0,0,0.01) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.01) 1px, transparent 1px);
+
+  /* UI token aliases */
+  --btn-bg: linear-gradient(180deg, var(--color-primary), #6aa286);
+  --btn-text: var(--color-on-primary);
+  --btn-shadow: 0 8px 30px rgba(17,64,51,0.06);
+  --btn-shadow-hover: 0 10px 36px rgba(17,64,51,0.08);
+
+  --card-bg: var(--color-surface);
+  --card-text: var(--color-text);
+  --card-border: rgba(139,207,174,0.16);
+  --card-shadow: var(--shadow-card);
+
+  --input-border: rgba(17,64,51,0.06);
+  --input-bg: rgba(255,255,255,0.98);
+  --input-text: var(--color-text);
+
+  --accent: var(--color-accent);
+  --accent-2: rgba(139,207,174,0.08);
+
+  /* Background image for light mode */
+  --bg-image: url(/assets/img/themes/forest1.jpg);
+
+  /* Backwards-compatible aliases */
+  --bg: var(--color-bg);
+  --text: var(--color-text);
+  --bg-alt: var(--color-surface);
+  --footer-bg: var(--color-surface);
+  --shadow-soft: var(--shadow-card);
+}
+
+/* --------------------------
+   DARK MODE (swamp/marsh)
+   Uses a dark green base; you can override --bg-image with a URL for a swamp photo
+--------------------------- */
+html[data-theme="whimsical-forest"][data-mode="dark"] {
+  --color-bg: linear-gradient(180deg, #05120f 0%, #02100e 100%); /* fallback dark */
+  --color-surface: rgba(3,13,11,0.6);
+  --color-border: #2f6b52;
+  --color-text: #d9efe7; /* pale mint text */
+  --color-primary: #2f8f66; /* mossy button */
+  --color-primary-hover: #267757;
+  --color-on-primary: #081412;
+  --color-accent: #4fbf93;
+  --shadow-card: 0 18px 48px rgba(0,0,0,0.6);
+  --font-main: 'Merriweather', serif;
+
+  /* Background image for dark mode (swamp/moody forest) */
+  --bg-image: url(/assets/img/themes/forest2.jpg);
+
+  /* UI token aliases for dark */
+  --btn-bg: transparent;
+  --btn-text: var(--color-text);
+  --btn-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  --btn-shadow-hover: 0 12px 56px rgba(0,0,0,0.7);
+
+  --card-bg: var(--color-surface);
+  --card-text: var(--color-text);
+  --card-border: rgba(47,107,82,0.12);
+  --card-shadow: var(--shadow-card);
+
+  --input-border: rgba(255,255,255,0.03);
+  --input-bg: rgba(255,255,255,0.02);
+  --input-text: var(--color-text);
+
+  --accent: var(--color-accent);
+  --accent-2: rgba(79,191,147,0.06);
+  /* Background image for light mode */
+  /* (light image is defined in the light-mode block; avoid overriding here) */
+  /* Backwards-compatible aliases */
+  --bg: var(--color-bg);
+  --text: var(--color-text);
+  --bg-alt: var(--color-surface);
+  --footer-bg: var(--color-surface);
+  --shadow-soft: var(--shadow-card);
+}
+
+/* --------------------------
+   BODY & BACKGROUND (apply optional --bg-image)
+   To set a dark-mode image later, set the CSS variable e.g.
+   document.documentElement.style.setProperty('--bg-image','url(/assets/images/swamp.jpg)')
+--------------------------- */
+body.theme-whimsical-forest {
+  font-family: var(--font-main);
+  color: var(--color-text);
+  background: var(--bg-image, var(--color-bg)); /* favors --bg-image if provided */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+/* CARD & FORM (scoped) */
+body.theme-whimsical-forest .auth-card {
+  width: 520px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  padding: 2.2rem 2rem;
+  box-shadow: var(--card-shadow);
+  border-radius: 16px;
+  position: relative;
+}
+
+body.theme-whimsical-forest .auth-card::before {
+  content: "Register";
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-weight: 700;
+  color: var(--color-primary);
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+body.theme-whimsical-forest .auth-form input,
+body.theme-whimsical-forest .auth-form select {
+  font-family: inherit;
+  padding: 0.9rem;
+  border: 1px solid var(--input-border);
+  background: var(--input-bg);
+  font-size: 0.95rem;
+  color: var(--input-text);
+  border-radius: 12px;
+}
+
+body.theme-whimsical-forest .primary-btn {
+  margin-top: 1.2rem;
+  padding: 0.85rem;
+  background: var(--btn-bg);
+  border: none;
+  color: var(--btn-text);
+  box-shadow: var(--btn-shadow);
+  border-radius: 999px;
+}
+
+body.theme-whimsical-forest .primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--btn-shadow-hover);
+}
+
+/* END WHIMSICAL FOREST THEME */
